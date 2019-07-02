@@ -20,7 +20,7 @@ AppWindow::AppWindow(HINSTANCE hinstance)
 	this->hinstance = hinstance;
 	screenWidth = 1600;
 	screenHeight = 900;
-	applicationName = TEXT("Engine00 - Window Setup");
+	applicationName = TEXT("Engine02 - DX Setup");
 	windowStyle = WS_OVERLAPPEDWINDOW;
 	app = this;
 }

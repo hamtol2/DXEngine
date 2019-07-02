@@ -19,6 +19,12 @@ public:
 		LPARAM lParam
 	);
 
+	// Getter.
+	HWND GetWindowHandle() const { return hwnd; }
+	UINT GetScreenWidth() const { return screenWidth; }
+	UINT GetScreenHeight() const { return screenHeight; }
+	LPCTSTR GetApplicationName() const { return applicationName; }
+
 protected:
 
 	HWND hwnd;				// 윈도우 핸들.
