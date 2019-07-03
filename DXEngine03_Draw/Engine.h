@@ -15,6 +15,10 @@ public:
 	bool Init() override;
 	void Update() override;
 	void Render() override;
+	
+private:
+
+	bool InitializeScene();
 
 private:
 

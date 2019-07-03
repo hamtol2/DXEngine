@@ -102,8 +102,8 @@ void DXApp::SetViewport()
 	ZeroMemory(&viewport, sizeof(D3D11_VIEWPORT));
 	viewport.TopLeftX = 0;
 	viewport.TopLeftY = 0;
-	viewport.Width 
-		= static_cast<float>(window->GetScreenWidth());
-	viewport.Height
-		= static_cast<float>(window->GetScreenHeight());
+	viewport.Width = static_cast<float>(window->GetScreenWidth());
+	viewport.Height = static_cast<float>(window->GetScreenHeight());
+
+	deviceContext->RSSetViewports(1, &viewport);
 }

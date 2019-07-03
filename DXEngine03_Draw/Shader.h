@@ -6,8 +6,8 @@ class Shader
 {
 public:
 	Shader();
-	Shader(LPTSTR fileName);
-	Shader(LPTSTR fileName, LPCSTR entry, LPCSTR profile);
+	Shader(LPCTSTR fileName);
+	Shader(LPCTSTR fileName, LPCSTR entry, LPCSTR profile);
 	virtual ~Shader();
 
 	virtual bool CompileShader(ID3D11Device* device) = 0;
@@ -15,10 +15,7 @@ public:
 	virtual void BindShader(ID3D11DeviceContext* deviceContext) = 0;
 	virtual void Release();
 
-	void SetFileName(LPCTSTR fileName)
-	{
-		this->fileName = fileName;
-	}
+	void SetFileName(LPCTSTR fileName) { this->fileName = fileName; }
 
 	// Getters.
 	LPCTSTR GetFileName() const { return fileName; }

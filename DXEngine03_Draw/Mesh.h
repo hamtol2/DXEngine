@@ -19,10 +19,7 @@ public:
 	Mesh();
 	~Mesh();
 
-	bool InitializeBuffers(
-		ID3D11Device* device, ID3DBlob* vertexShaderBuffer
-	);
-
+	bool InitializeBuffers(ID3D11Device* device, ID3DBlob* vertexShaderBuffer);
 	void RenderBuffers(ID3D11DeviceContext* deviceContext);
 
 private:

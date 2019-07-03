@@ -20,7 +20,7 @@ AppWindow::AppWindow(HINSTANCE hinstance)
 	this->hinstance = hinstance;
 	screenWidth = 1600;
 	screenHeight = 900;
-	applicationName = TEXT("Engine02 - DX Setup");
+	applicationName = TEXT("Engine03 - Draw");
 	windowStyle = WS_OVERLAPPEDWINDOW;
 	app = this;
 }
@@ -97,10 +97,7 @@ LRESULT AppWindow::MessageProcessor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 		{
 			if (wParam == VK_ESCAPE)
 			{
-				if (MessageBox(NULL,
-					TEXT("종료 하시겠습니까?"),
-					TEXT("종료"), 
-					MB_YESNO | MB_ICONQUESTION) == IDYES)
+				if (MessageBox(NULL, TEXT("종료 하시겠습니까?"), TEXT("종료"), MB_YESNO | MB_ICONQUESTION) == IDYES)
 				{
 					// 예 버튼 눌리면 창 삭제.
 					DestroyWindow(this->hwnd);

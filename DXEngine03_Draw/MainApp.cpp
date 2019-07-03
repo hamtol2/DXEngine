@@ -2,11 +2,7 @@
 
 #include "Engine.h"
 
-int WINAPI WinMain(
-	HINSTANCE hInstance, 
-	HINSTANCE hPrevInstance, 
-	LPSTR pCmdLine, 
-	int nCmdShow)
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR pCmdLine, int nCmdShow)
 {
 	Engine engine(hInstance);
 
