@@ -20,14 +20,13 @@ AppWindow::AppWindow(HINSTANCE hinstance)
 	this->hinstance = hinstance;
 	screenWidth = 1600;
 	screenHeight = 900;
-	applicationName = TEXT("Engine03 - Draw");
+	applicationName = TEXT("Engine05 - Index Buffer");
 	windowStyle = WS_OVERLAPPEDWINDOW;
 	app = this;
 }
 
 AppWindow::~AppWindow()
 {
-
 }
 
 int AppWindow::Run(Engine * engine)
