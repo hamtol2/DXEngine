@@ -69,7 +69,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files\Autodesk\FBX\FBX SDK\2019.0\lib\vs2015\x86\debug;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -132,7 +135,9 @@
     <ClCompile Include="Engine\PixelShader.cpp" />
     <ClCompile Include="Engine\Shader.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
+    <ClCompile Include="Engine\Vertex.cpp" />
     <ClCompile Include="Engine\VertexShader.cpp" />
+    <ClCompile Include="Library\FBXLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AppWindow.h" />
@@ -143,8 +148,10 @@
     <ClInclude Include="Engine\PixelShader.h" />
     <ClInclude Include="Engine\Shader.h" />
     <ClInclude Include="Engine\Texture.h" />
+    <ClInclude Include="Engine\Vertex.h" />
     <ClInclude Include="Engine\VertexShader.h" />
     <ClInclude Include="Library\DirectXTex.h" />
+    <ClInclude Include="Library\FBXLoader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

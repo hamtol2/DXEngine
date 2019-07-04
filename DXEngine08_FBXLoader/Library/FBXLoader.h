@@ -12,6 +12,6 @@ namespace FBXLoader
 {
 	HRESULT LoadFBX(
 		LPCSTR fileName,
-		std::vector<Vertex> outVertices,
-		std::vector<DWORD> outIndices);
+		std::vector<Vertex>* outVertices,
+		std::vector<DWORD>* outIndices);
 }
