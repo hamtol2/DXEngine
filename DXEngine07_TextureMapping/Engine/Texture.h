@@ -3,7 +3,7 @@
 #include "DXUtil.h"
 #include "../Library/DirectXTex.h"
 
-#pragma comment(lib, "../Library/DirectXTex.lib")
+#pragma comment(lib, "Library/DirectXTex.lib")
 
 using namespace DirectX;
 

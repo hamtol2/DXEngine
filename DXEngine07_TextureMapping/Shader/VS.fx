@@ -14,12 +14,14 @@ struct vs_input
 {
 	float4 position : POSITION;
 	float4 color : COLOR;
+	float2 texCoord : TEXCOORD;
 };
 
 struct vs_output
 {
 	float4 position : SV_POSITION;
 	float4 color : COLOR;
+	float2 texCoord : TEXCOORD;
 };
 
 // ¡§¡° ºŒ¿Ã¥ı.
@@ -35,6 +37,7 @@ vs_output main(vs_input input)
 	output.position = mul(output.position, projection);
 
 	output.color = input.color;
+	output.texCoord = input.texCoord;
 
 	return output;
 }

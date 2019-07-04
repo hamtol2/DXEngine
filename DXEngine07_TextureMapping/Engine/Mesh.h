@@ -11,12 +11,15 @@ private:
 	{
 		XMFLOAT3 position;
 		XMFLOAT4 color;
+		XMFLOAT2 textureCoord;
 
 		Vertex(float x, float y, float z) :
 			position(x, y, z) { }
 		Vertex(XMFLOAT3 position) : position(position) { }
 		Vertex(XMFLOAT3 position, XMFLOAT4 color) 
 			: position(position), color(color) { }
+		Vertex(XMFLOAT3 position, XMFLOAT4 color, XMFLOAT2 uv)
+			: position(position), color(color), textureCoord(uv) { }
 	};
 
 	struct PerObjectBuffer

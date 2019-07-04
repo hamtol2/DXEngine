@@ -59,6 +59,9 @@
     <ClCompile Include="Engine\VertexShader.cpp">
       <Filter>Engine\소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Texture.cpp">
+      <Filter>Engine\소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AppWindow.h">
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="Library\DirectXTex.h">
       <Filter>Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Texture.h">
+      <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

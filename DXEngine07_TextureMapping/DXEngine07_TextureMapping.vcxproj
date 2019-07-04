@@ -131,6 +131,7 @@
     <ClCompile Include="Engine\Mesh.cpp" />
     <ClCompile Include="Engine\PixelShader.cpp" />
     <ClCompile Include="Engine\Shader.cpp" />
+    <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\VertexShader.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +142,7 @@
     <ClInclude Include="Engine\Mesh.h" />
     <ClInclude Include="Engine\PixelShader.h" />
     <ClInclude Include="Engine\Shader.h" />
+    <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\VertexShader.h" />
     <ClInclude Include="Library\DirectXTex.h" />
   </ItemGroup>

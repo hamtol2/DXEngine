@@ -57,6 +57,10 @@ void Engine::Render()
 	vertexShader->BindShader(deviceContext);
 	pixelShader->BindShader(deviceContext);
 
+	// 텍스처/샘플러 스테이트 바인딩.
+	pixelShader->BindTexture(deviceContext);
+	pixelShader->BindSamplerState(deviceContext);
+
 	// 메시 버퍼 그리기.
 	mesh->RenderBuffers(deviceContext);
 
@@ -87,8 +91,21 @@ bool Engine::InitializeScene()
 	if (pixelShader->CreateShader(device) == false)
 		return false;
 
+	// 텍스처 로드.
+	if (pixelShader->LoadTexture(
+		device,
+		TEXT("Resources/Textures/ironman.jpg"))
+		== false)
+	{
+		return false;
+	}
+
+	// 샘플러 스테이트 생성.
+	if (pixelShader->CreateSamplerState(device) == false)
+		return false;
+
 	// 메쉬 생성.
-	mesh = new Mesh(2.0f, 1.0f, 0.0f);
+	mesh = new Mesh(0.0f, 0.0f, 0.0f);
 	// 초기화.
 	if (mesh->InitializeBuffers(device, vertexShader->GetShaderBuffer()) 
 		== false)
