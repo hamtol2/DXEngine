@@ -19,6 +19,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Library">
+      <UniqueIdentifier>{cb4162e7-798c-42dd-9b3f-34fce3ca74c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\PS.fx">
@@ -81,6 +84,9 @@
     </ClInclude>
     <ClInclude Include="Engine\VertexShader.h">
       <Filter>Engine\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\DirectXTex.h">
+      <Filter>Library</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
