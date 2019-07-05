@@ -92,6 +92,8 @@ namespace FBXLoader
 					vertex.position.z
 						= static_cast<float>(vertices[vertexIndex].mData[2]);
 
+					vertex.textureCoord = ReadUV(fbxMesh, vertexIndex, vertexCounter);
+
 					// 정점 추가.
 					outVertices->push_back(vertex);
 
@@ -103,5 +105,70 @@ namespace FBXLoader
 		}
 
 		return S_OK;
+	}
+
+	XMFLOAT2 ReadUV(FbxMesh * fbxMesh, int controlPointIndex, int vertexCounter)
+	{
+		// UV가 있는지 확인.
+		if (fbxMesh->GetElementUVCount() < 1)
+		{
+			MessageBox(NULL, TEXT("UV가 없습니다"), TEXT("오류"), MB_OK);
+			return XMFLOAT2();
+		}
+
+		// 반환용 변수 선언.
+		XMFLOAT2 texCoord(0.0f, 0.0f);
+
+		// UV 전체 배열 읽어오기.
+		FbxGeometryElementUV* vertexUV = fbxMesh->GetElementUV(0);
+		// 참조 방법 확인.
+		const bool isUsingIndex = vertexUV->GetReferenceMode()
+			!= FbxGeometryElement::eDirect;
+		const int indexCount = isUsingIndex ? vertexUV->GetIndexArray().GetCount() : 0;
+
+		// 매핑 모드 확인.
+		switch (vertexUV->GetMappingMode())
+		{
+			// 현재 정점이 제어점(Control Point) 유형인 경우.
+			case FbxGeometryElement::eByControlPoint:
+			{
+				// 현재 UV 값을 읽어올 인덱스 얻어오기.
+				int index = isUsingIndex ? 
+					vertexUV->GetIndexArray().GetAt(controlPointIndex) 
+					: controlPointIndex;
+
+				// UV 읽어오기.
+				texCoord.x = (float)vertexUV->GetDirectArray().GetAt(index).mData[0];
+				texCoord.y 
+					= 1.0f - (float)vertexUV->GetDirectArray().GetAt(index).mData[1];
+
+				// UV 반환.
+				return texCoord;
+			}
+
+			case FbxGeometryElement::eByPolygonVertex:
+			{
+				// 현재 UV 값을 읽어올 인덱스 얻어오기.
+				int index = isUsingIndex ?
+					vertexUV->GetIndexArray().GetAt(vertexCounter)
+					: vertexCounter;
+
+				// UV 읽어오기.
+				texCoord.x = (float)vertexUV->GetDirectArray().GetAt(index).mData[0];
+				texCoord.y
+					= 1.0f - (float)vertexUV->GetDirectArray().GetAt(index).mData[1];
+
+				// UV 반환.
+				return texCoord;
+			}
+
+			default:
+			{
+				MessageBox(NULL, TEXT("UV값이 유효하지 않습니다."), TEXT("오류"), MB_OK);
+				return XMFLOAT2();
+			}
+		}
+
+		//return XMFLOAT2();
 	}
 }

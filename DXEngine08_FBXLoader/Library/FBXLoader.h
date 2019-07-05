@@ -10,8 +10,16 @@
 
 namespace FBXLoader
 {
+	// FBX 로드.
 	HRESULT LoadFBX(
 		LPCSTR fileName,
 		std::vector<Vertex>* outVertices,
 		std::vector<DWORD>* outIndices);
+
+	// 정점 UV 읽어오는 메소드.
+	XMFLOAT2 ReadUV(
+		FbxMesh* fbxMesh,
+		int controlPointIndex,
+		int vertexCounter
+	);
 }

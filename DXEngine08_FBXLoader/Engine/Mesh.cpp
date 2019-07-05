@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "../Library/FBXLoader.h"
 
 Mesh::Mesh()
 {
@@ -7,6 +8,11 @@ Mesh::Mesh()
 Mesh::Mesh(float x, float y, float z)
 {
 	SetPosition(x, y, z);
+}
+
+Mesh::Mesh(LPCSTR fbxName)
+{
+	fileName = fbxName;
 }
 
 Mesh::~Mesh()
@@ -18,33 +24,13 @@ Mesh::~Mesh()
 bool Mesh::InitializeBuffers(
 	ID3D11Device * device, ID3DBlob * vertexShaderBuffer)
 {
-	// 정점 배열.
-	Vertex vertices[] = {
-		Vertex(
-			XMFLOAT3(-2.5f, 1.5f, 0.5f), 
-			//XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-			XMFLOAT2(0.0f, 0.0f)
-		),
-		Vertex(
-			XMFLOAT3(2.5f, 1.5f, 0.5f),
-			//XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
-			XMFLOAT2(1.0f, 0.0f)
-		),
-		Vertex(
-			XMFLOAT3(2.5f, -1.5f, 0.5f),
-			//XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT2(1.0f, 1.0f)
-		),
-		Vertex(
-			XMFLOAT3(-2.5f, -1.5f, 0.5f),
-			//XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
-			XMFLOAT2(0.0f, 1.0f)
-		)
-	};
+	// FBX 로드.
+	HRESULT result = FBXLoader::LoadFBX(fileName, &vertices, &indices);
+	if (IsError(result, TEXT("FBX 로드 실패")))
+		return false;
 
 	// 배열 크기 저장.
-	//int size = sizeof(vertices) / sizeof(vertices[0]);
-	nVertices = ARRAYSIZE(vertices);
+	nVertices = GetVertexCount();
 
 	D3D11_BUFFER_DESC vbDesc;
 	ZeroMemory(&vbDesc, sizeof(D3D11_BUFFER_DESC));
@@ -58,23 +44,17 @@ bool Mesh::InitializeBuffers(
 	// 정점 배열 정보 넣어줄 구조체.
 	D3D11_SUBRESOURCE_DATA vbData;
 	ZeroMemory(&vbData, sizeof(D3D11_SUBRESOURCE_DATA));
-	vbData.pSysMem = vertices;
+	vbData.pSysMem = &vertices[0];
 
 	// 정점 버퍼 생성.
-	HRESULT result = device->CreateBuffer(&vbDesc, &vbData, &vertexBuffer);
+	result = device->CreateBuffer(&vbDesc, &vbData, &vertexBuffer);
 	if (IsError(result, TEXT("정점 버퍼 생성 실패")))
 	{
 		return false;
 	}
 
-	// 인덱스 배열.
-	DWORD indices[] = 
-	{
-		0, 1, 2,
-		0, 2, 3
-	};
-
-	nIndices = ARRAYSIZE(indices);
+	//nIndices = ARRAYSIZE(indices);
+	nIndices = GetIndexCount();
 
 	// 버퍼 서술자.
 	D3D11_BUFFER_DESC ibDesc;
@@ -89,7 +69,7 @@ bool Mesh::InitializeBuffers(
 	// 인덱스 배열 정보 넣어줄 구조체.
 	D3D11_SUBRESOURCE_DATA ibData;
 	ZeroMemory(&ibData, sizeof(D3D11_SUBRESOURCE_DATA));
-	ibData.pSysMem = indices;
+	ibData.pSysMem = &indices[0];
 
 	// 인덱스 버퍼 생성.
 	result = device->CreateBuffer(&ibDesc, &ibData, &indexBuffer);
@@ -98,23 +78,10 @@ bool Mesh::InitializeBuffers(
 		return false;
 	}
 
-	// 입력 레이아웃 서술자 생성.
-	//LPCSTR SemanticName;
-	//UINT SemanticIndex;
-	//DXGI_FORMAT Format;
-	//UINT InputSlot;
-	//UINT AlignedByteOffset;
-	//D3D11_INPUT_CLASSIFICATION InputSlotClass;
-	//UINT InstanceDataStepRate;
-	D3D11_INPUT_ELEMENT_DESC layout[] = 
-	{
-		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		/*{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },*/
-		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-	};
-
 	// 입력 레이아웃 생성.
-	result = device->CreateInputLayout(layout, ARRAYSIZE(layout),
+	result = device->CreateInputLayout(
+		inputLayoutDesc, 
+		ARRAYSIZE(inputLayoutDesc),
 		vertexShaderBuffer->GetBufferPointer(),
 		vertexShaderBuffer->GetBufferSize(),
 		&inputLayout
@@ -185,7 +152,26 @@ void Mesh::Update(ID3D11DeviceContext * deviceContext)
 	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);
 }
 
-XMMATRIX Mesh::GetWorldMatrix() const
+XMMATRIX Mesh::GetWorldMatrix()
+{
+	return GetScaleMatrix() * GetRotationMatrix() * GetTranslationMatrix();
+}
+
+XMMATRIX Mesh::GetTranslationMatrix()
 {
 	return XMMatrixTranslation(position.x, position.y, position.z);
+}
+
+XMMATRIX Mesh::GetRotationMatrix()
+{
+	XMMATRIX rotX = XMMatrixRotationX(XMConvertToRadians(rotation.x));
+	XMMATRIX rotY = XMMatrixRotationY(XMConvertToRadians(rotation.y));
+	XMMATRIX rotZ = XMMatrixRotationZ(XMConvertToRadians(rotation.z));
+
+	return rotZ * rotX * rotY;
+}
+
+XMMATRIX Mesh::GetScaleMatrix()
+{
+	return XMMatrixScaling(scale.x, scale.y, scale.z);
 }

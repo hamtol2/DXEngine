@@ -94,7 +94,7 @@ bool Engine::InitializeScene()
 	// 텍스처 로드.
 	if (pixelShader->LoadTexture(
 		device,
-		TEXT("Resources/Textures/ironman.jpg"))
+		TEXT("Resources/Textures/T_Chr_FPS_D.png"))
 		== false)
 	{
 		return false;
@@ -105,7 +105,10 @@ bool Engine::InitializeScene()
 		return false;
 
 	// 메쉬 생성.
-	mesh = new Mesh(0.0f, 0.0f, 0.0f);
+	//mesh = new Mesh(0.0f, 0.0f, 0.0f);
+	mesh = new Mesh("Resources/Models/HeroTPP.FBX");
+	mesh->SetPosition(0.0f, -90.0f, 0.0f);
+	mesh->SetRotation(-90.0f, 180.0f, 0.0f);
 	// 초기화.
 	if (mesh->InitializeBuffers(device, vertexShader->GetShaderBuffer()) 
 		== false)
@@ -117,7 +120,7 @@ bool Engine::InitializeScene()
 bool Engine::InitializeTransformation()
 {
 	// 카메라 정보 설정.
-	cameraPosition = XMVectorSet(0.0f, 0.0f, -2.0f, 0.0f);
+	cameraPosition = XMVectorSet(0.0f, 0.0f, -200.0f, 0.0f);
 	cameraView = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	camerUpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
@@ -129,7 +132,7 @@ bool Engine::InitializeTransformation()
 	float fovY = XMConvertToRadians(70.0f);
 	float aspectRatio = static_cast<float>(window->GetScreenWidth()) / static_cast<float>(window->GetScreenHeight());
 
-	XMMATRIX projection = XMMatrixPerspectiveFovLH(fovY, aspectRatio, 1.0f, 100.0f);
+	XMMATRIX projection = XMMatrixPerspectiveFovLH(fovY, aspectRatio, 1.0f, 10000.0f);
 
 	// 버퍼에 담을 구조체 변수 설정.
 	PerSceneBuffer matrixData;
