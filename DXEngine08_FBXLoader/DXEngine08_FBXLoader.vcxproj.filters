@@ -24,14 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\PS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\VS.fx">
-      <Filter>Shader</Filter>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Engine\AppWindow.cpp">
       <Filter>Engine\소스 파일</Filter>
     </ClCompile>
@@ -106,5 +98,13 @@
     <ClInclude Include="Engine\Vertex.h">
       <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\PS.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\VS.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

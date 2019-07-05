@@ -19,6 +19,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine07_TextureMapping",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine08_FBXLoader", "DXEngine08_FBXLoader\DXEngine08_FBXLoader.vcxproj", "{D37A2B7F-7B73-4169-BA61-C4A139D1D55D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine09_Diffuse", "DXEngine09_Diffuse\DXEngine09_Diffuse.vcxproj", "{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -91,6 +93,14 @@ Global
 		{D37A2B7F-7B73-4169-BA61-C4A139D1D55D}.Release|x64.Build.0 = Release|x64
 		{D37A2B7F-7B73-4169-BA61-C4A139D1D55D}.Release|x86.ActiveCfg = Release|Win32
 		{D37A2B7F-7B73-4169-BA61-C4A139D1D55D}.Release|x86.Build.0 = Release|Win32
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Debug|x64.ActiveCfg = Debug|x64
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Debug|x64.Build.0 = Debug|x64
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Debug|x86.ActiveCfg = Debug|Win32
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Debug|x86.Build.0 = Debug|Win32
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x64.ActiveCfg = Release|x64
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x64.Build.0 = Release|x64
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x86.ActiveCfg = Release|Win32
+		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

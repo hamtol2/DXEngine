@@ -120,9 +120,11 @@
   <ItemGroup>
     <FxCompile Include="Shader\PS.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <FileType>Document</FileType>
     </FxCompile>
     <FxCompile Include="Shader\VS.fx">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <FileType>Document</FileType>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

@@ -31,8 +31,14 @@ bool VertexShader::CompileShader(ID3D11Device * device)
 	return true;
 }
 
-bool VertexShader::CreateShader(ID3D11Device * device)
+bool VertexShader::CreateShader(ID3D11Device * device, bool loadPreCompiled)
 {
+	// 사전 컴파일된 셰이더 파일을 로드하는 경우.
+	if (loadPreCompiled)
+	{
+		D3DReadFileToBlob(fileName, &shaderBuffer);
+	}
+
 	// 정점 셰이더 객체 생성.
 	HRESULT result = device->CreateVertexShader(
 		shaderBuffer->GetBufferPointer(),

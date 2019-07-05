@@ -33,8 +33,14 @@ bool PixelShader::CompileShader(ID3D11Device * device)
 	return true;
 }
 
-bool PixelShader::CreateShader(ID3D11Device * device)
+bool PixelShader::CreateShader(ID3D11Device * device, bool loadPreCompiled)
 {
+	// 사전 컴파일된 셰이더 파일을 로드하는 경우.
+	if (loadPreCompiled)
+	{
+		D3DReadFileToBlob(fileName, &shaderBuffer);
+	}
+
 	// 픽셀 셰이더 객체 생성.
 	HRESULT result = device->CreatePixelShader(
 		shaderBuffer->GetBufferPointer(),

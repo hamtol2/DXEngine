@@ -11,7 +11,7 @@ public:
 	~VertexShader();
 
 	virtual bool CompileShader(ID3D11Device* device) override;
-	virtual bool CreateShader(ID3D11Device* device) override;
+	virtual bool CreateShader(ID3D11Device* device, bool loadPreCompiled = false) override;
 	virtual void BindShader(ID3D11DeviceContext* deviceContext) override;
 	virtual void Release() override;
 

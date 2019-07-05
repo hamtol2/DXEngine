@@ -71,24 +71,24 @@ void Engine::Render()
 bool Engine::InitializeScene()
 {
 	// Á¤Á¡ ¼ÎÀÌ´õ »ý¼º.
-	vertexShader = new VertexShader(TEXT("Shader//VS.fx"));
+	vertexShader = new VertexShader(TEXT("Shader//VS.cso"));
 	// Á¤Á¡ ¼ÎÀÌ´õ ÄÄÆÄÀÏ.
-	if (vertexShader->CompileShader(device) == false)
-		return false;
+	//if (vertexShader->CompileShader(device) == false)
+	//	return false;
 
 	// Á¤Á¡ ¼ÎÀÌ´õ °´Ã¼ »ý¼º.
-	if (vertexShader->CreateShader(device) == false)
+	if (vertexShader->CreateShader(device, true) == false)
 		return false;
 
 	// ÇÈ¼¿ ¼ÎÀÌ´õ »ý¼º.
-	pixelShader = new PixelShader(TEXT("Shader//PS.fx"));
-	// ÇÈ¼¿ ¼ÎÀÌ´õ ÄÄÆÄÀÏ.
+	pixelShader = new PixelShader(TEXT("Shader//PS.cso"));
 
-	if (pixelShader->CompileShader(device) == false)
-		return false;
+	// ÇÈ¼¿ ¼ÎÀÌ´õ ÄÄÆÄÀÏ.
+	//if (pixelShader->CompileShader(device) == false)
+	//	return false;
 
 	// ÇÈ¼¿ ¼ÎÀÌ´õ °´Ã¼ »ý¼º.
-	if (pixelShader->CreateShader(device) == false)
+	if (pixelShader->CreateShader(device, true) == false)
 		return false;
 
 	// ÅØ½ºÃ³ ·Îµå.

@@ -11,7 +11,7 @@ public:
 	virtual ~Shader();
 
 	virtual bool CompileShader(ID3D11Device* device) = 0;
-	virtual bool CreateShader(ID3D11Device* device) = 0;
+	virtual bool CreateShader(ID3D11Device* device, bool loadPreCompiled = false) = 0;
 	virtual void BindShader(ID3D11DeviceContext* deviceContext) = 0;
 	virtual void Release();
 
