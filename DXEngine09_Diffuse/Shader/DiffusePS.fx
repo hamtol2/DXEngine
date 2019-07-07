@@ -15,8 +15,6 @@ float4 main(ps_input input) : SV_TARGET
 	// 텍스처 색상 읽어오기.
 	float4 textureColor = diffuseMap.Sample(diffuseSampler, input.texCoord);
 
-	float3 lightColor = float3(0.5f, 0.5f, 0.0f);
-
 	// 음영처리 (디퓨즈).
 	float3 diffuse = saturate(input.diffuse);
 	diffuse = diffuse * textureColor.rgb;

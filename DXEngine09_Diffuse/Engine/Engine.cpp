@@ -53,6 +53,9 @@ void Engine::Render()
 	// 렌더 타겟을 설정한 색상으로 칠하기.
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
 
+	// 뎁스/스텐실 뷰 지우기.
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
 	// 셰이더 바인딩.
 	vertexShader->BindShader(deviceContext);
 	pixelShader->BindShader(deviceContext);
@@ -71,7 +74,7 @@ void Engine::Render()
 bool Engine::InitializeScene()
 {
 	// 정점 셰이더 생성.
-	vertexShader = new VertexShader(TEXT("Shader//VS.fx"));
+	vertexShader = new VertexShader(TEXT("Shader//DiffuseVS.fx"));
 	// 정점 셰이더 컴파일.
 	if (vertexShader->CompileShader(device) == false)
 		return false;
@@ -81,7 +84,7 @@ bool Engine::InitializeScene()
 		return false;
 
 	// 픽셀 셰이더 생성.
-	pixelShader = new PixelShader(TEXT("Shader//PS.fx"));
+	pixelShader = new PixelShader(TEXT("Shader//DiffusePS.fx"));
 
 	// 픽셀 셰이더 컴파일.
 	if (pixelShader->CompileShader(device) == false)
@@ -94,7 +97,7 @@ bool Engine::InitializeScene()
 	// 텍스처 로드.
 	if (pixelShader->LoadTexture(
 		device,
-		TEXT("Resources/Textures/Char_M_Cardboard_D.png"))
+		TEXT("Resources/Textures/T_Chr_FPS_D.png"))
 		== false)
 	{
 		return false;
@@ -106,9 +109,9 @@ bool Engine::InitializeScene()
 
 	// 메쉬 생성.
 	//mesh = new Mesh(0.0f, 0.0f, 0.0f);
-	mesh = new Mesh("Resources/Models/SK_CharM_Cardboard.FBX");
+	mesh = new Mesh("Resources/Models/HeroTPP.FBX");
 	mesh->SetPosition(0.0f, -90.0f, 0.0f);
-	mesh->SetRotation(-90.0f, 180.0f, 0.0f);
+	mesh->SetRotation(-90.0f, 0.0f, 0.0f);
 	// 초기화.
 	if (mesh->InitializeBuffers(device, vertexShader->GetShaderBuffer()) 
 		== false)

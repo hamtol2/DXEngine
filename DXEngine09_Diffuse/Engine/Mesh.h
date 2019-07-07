@@ -89,4 +89,6 @@ private:
 	XMFLOAT3 position = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 위치 정보.
 	XMFLOAT3 rotation = XMFLOAT3(0.0f, 0.0f, 0.0f);			// 회전 정보.
 	XMFLOAT3 scale = XMFLOAT3(1.0f, 1.0f, 1.0f);			// 스케일 정보.
+
+	PerObjectBuffer matrixData;
 };

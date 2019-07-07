@@ -21,8 +21,7 @@ Mesh::~Mesh()
 	Memory::SafeRelease(inputLayout);
 }
 
-bool Mesh::InitializeBuffers(
-	ID3D11Device * device, ID3DBlob * vertexShaderBuffer)
+bool Mesh::InitializeBuffers(ID3D11Device * device, ID3DBlob * vertexShaderBuffer)
 {
 	// FBX 로드.
 	HRESULT result = FBXLoader::LoadFBX(fileName, &vertices, &indices);
@@ -94,7 +93,7 @@ bool Mesh::InitializeBuffers(
 
 	// 상수 버퍼 생성.
 	// DX 행우선 / HLSL 열우선.
-	PerObjectBuffer matrixData;
+	//PerObjectBuffer matrixData;
 	matrixData.world = XMMatrixTranspose(GetWorldMatrix());		// 월드 행렬 설정.
 
 	// 버퍼 서술자.
@@ -147,6 +146,18 @@ void Mesh::RenderBuffers(ID3D11DeviceContext * deviceContext)
 void Mesh::Update(ID3D11DeviceContext * deviceContext)
 {
 	// 위치(회전, 스케일) 정보 업데이트.
+	// 현재 회전 값 가져와 Y 회전 값 더하기.
+	XMFLOAT3 rot = GetRotation();
+	rot.y += 1.5f;
+
+	// 변경한 회전 값 설정하기.
+	SetRotation(rot.x, rot.y, rot.z);
+	
+	// 월드 행렬 업데이트하기.
+	matrixData.world = XMMatrixTranspose(GetWorldMatrix());
+
+	// 상수 버퍼에 연결된 데이터 업데이트하기.
+	deviceContext->UpdateSubresource(constantBuffer, 0, 0, &matrixData, 0, 0);
 
 	// 월드 행렬 버퍼 바인딩.
 	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);

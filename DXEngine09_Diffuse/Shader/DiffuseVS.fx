@@ -14,7 +14,7 @@ cbuffer perSceneBuffer : register(b1)
 struct vs_input
 {
 	float4 position : POSITION;
-	float2 texCoord : TEXCOORD;
+	float2 texCoord : TEXCOORD0;
 	float3 normal : NORMAL;
 };
 
@@ -53,7 +53,6 @@ vs_output main(vs_input input)
 	output.position = mul(output.position, view);
 	output.position = mul(output.position, projection);
 
-	//output.color = input.color;
 	output.texCoord = input.texCoord;
 
 	return output;

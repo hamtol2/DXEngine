@@ -4,7 +4,7 @@ namespace FBXLoader
 {
 	FbxManager* fbxManager;
 
-	HRESULT LoadFBX(LPCSTR fileName, std::vector<Vertex>* outVertices, 
+	HRESULT LoadFBX(LPCSTR fileName, std::vector<Vertex>* outVertices,
 		std::vector<DWORD>* outIndices)
 	{
 		// fbxManager가 생성이 안됐으면 생성하기.
@@ -52,6 +52,10 @@ namespace FBXLoader
 			// 자식 계층 노드 읽어오기.
 			FbxNode* childNode = fbxRootNode->GetChild(ix);
 
+			// 속성이 없는 노드는 패스.
+			if (childNode->GetNodeAttribute() == NULL)
+				continue;
+
 			// 속성 중에서 타입만 확인.
 			FbxNodeAttribute::EType attrType
 				= childNode->GetNodeAttribute()->GetAttributeType();
@@ -85,15 +89,13 @@ namespace FBXLoader
 
 					// 정점 정보 읽어오기.
 					Vertex vertex;
-					vertex.position.x
-						= static_cast<float>(vertices[vertexIndex].mData[0]);
-					vertex.position.y
-						= static_cast<float>(vertices[vertexIndex].mData[1]);
-					vertex.position.z
-						= static_cast<float>(vertices[vertexIndex].mData[2]);
+					vertex.position.x = static_cast<float>(vertices[vertexIndex].mData[0]);
+					vertex.position.y = static_cast<float>(vertices[vertexIndex].mData[1]);
+					vertex.position.z = static_cast<float>(vertices[vertexIndex].mData[2]);
 
 					// UV 읽어오기.
-					vertex.textureCoord = ReadUV(fbxMesh, vertexIndex, vertexCounter);
+					// jx -> 폴리곤 순번 / kx -> 폴리곤 안에서의 정점 순번.
+					vertex.textureCoord = ReadUV(fbxMesh, vertexIndex, jx, kx);
 
 					// 노멀 읽어오기.
 					vertex.normal = ReadNormal(fbxMesh, vertexIndex, vertexCounter);
@@ -110,8 +112,8 @@ namespace FBXLoader
 
 		return S_OK;
 	}
-
-	XMFLOAT2 ReadUV(FbxMesh * fbxMesh, int controlPointIndex, int vertexCounter)
+	
+	XMFLOAT2 ReadUV(FbxMesh * fbxMesh, int controlPointIndex, int polygonIndex, int positionInPolygon)
 	{
 		// UV가 있는지 확인.
 		if (fbxMesh->GetElementUVCount() < 1)
@@ -124,16 +126,29 @@ namespace FBXLoader
 		XMFLOAT2 texCoord(0.0f, 0.0f);
 
 		// UV 전체 배열 읽어오기.
-		FbxGeometryElementUV* vertexUV = fbxMesh->GetElementUV(0);
+		FbxGeometryElementUV* vertexUV = fbxMesh->GetLayer(0)->GetUVs();
+		FbxLayerElement::EReferenceMode referenceMode = vertexUV->GetReferenceMode();
+		FbxLayerElement::EMappingMode mappingMode = vertexUV->GetMappingMode();
 
-		// 현재 UV 값을 읽어올 인덱스 얻어오기.
-		int index = vertexUV->GetIndexArray().GetAt(vertexCounter);
+		int index = 0;
+		if (mappingMode == FbxLayerElement::eByControlPoint)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = controlPointIndex;
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
+				index = vertexUV->GetIndexArray().GetAt(controlPointIndex);
+		}
+		else if (mappingMode == FbxLayerElement::eByPolygonVertex)
+		{
+			if (referenceMode == FbxLayerElement::eDirect || referenceMode == FbxLayerElement::eByPolygonVertex)
+			{
+				index = fbxMesh->GetTextureUVIndex(polygonIndex, positionInPolygon);
+			}
+		}
 
-		// UV 읽어오기.
-		texCoord.x = (float)vertexUV->GetDirectArray().GetAt(index).mData[0];
-		texCoord.y = 1.0f - (float)vertexUV->GetDirectArray().GetAt(index).mData[1];
+		texCoord.x = static_cast<float>(vertexUV->GetDirectArray().GetAt(index).mData[0]);
+		texCoord.y = 1.0f - static_cast<float>(vertexUV->GetDirectArray().GetAt(index).mData[1]);
 
-		// UV 반환.
 		return texCoord;
 	}
 
@@ -150,17 +165,30 @@ namespace FBXLoader
 		XMFLOAT3 normal(0.0f, 0.0f, 0.0f);
 
 		// UV 전체 배열 읽어오기.
-		FbxGeometryElementNormal* vertexNormal = fbxMesh->GetElementNormal(0);
+		FbxGeometryElementNormal* vertexNormal = fbxMesh->GetLayer(0)->GetNormals();
+		FbxLayerElement::EReferenceMode referenceMode = vertexNormal->GetReferenceMode();
+		FbxLayerElement::EMappingMode mappingMode = vertexNormal->GetMappingMode();
 
-		// 현재 UV 값을 읽어올 인덱스 얻어오기.
-		int index = vertexNormal->GetIndexArray().GetAt(vertexCounter);
+		int index = 0;
+		if (mappingMode == FbxLayerElement::eByControlPoint)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = controlPointIndex;
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
+				index = vertexNormal->GetIndexArray().GetAt(controlPointIndex);
+		}
+		else if (mappingMode == FbxLayerElement::eByPolygonVertex)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = vertexCounter;
+			else if (referenceMode == FbxLayerElement::eByPolygonVertex)
+				index = vertexNormal->GetIndexArray().GetAt(vertexCounter);
+		}
 
-		// UV 읽어오기.
-		normal.x = (float)vertexNormal->GetDirectArray().GetAt(index).mData[0];
-		normal.y = (float)vertexNormal->GetDirectArray().GetAt(index).mData[1];
-		normal.z = (float)vertexNormal->GetDirectArray().GetAt(index).mData[2];
+		normal.x = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[0]);
+		normal.y = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[1]);
+		normal.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);
 
-		// UV 반환.
 		return normal;
 	}
 }

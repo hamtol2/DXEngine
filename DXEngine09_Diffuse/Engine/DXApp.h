@@ -23,8 +23,14 @@ protected:
 	IDXGISwapChain* swapChain;
 	ID3D11RenderTargetView* renderTargetView;
 
+	// µª½º/½ºÅÙ½Ç ¹öÆÛ.
+	ID3D11DepthStencilView* depthStencilView;
+	ID3D11Texture2D* depthStencilBuffer;
+
 protected:
 
 	bool InitializeDirect3D();
+	bool InitializeDepthStencilBuffer();
+
 	void SetViewport();
 };
