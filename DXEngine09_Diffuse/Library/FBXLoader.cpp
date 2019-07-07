@@ -140,7 +140,7 @@ namespace FBXLoader
 		}
 		else if (mappingMode == FbxLayerElement::eByPolygonVertex)
 		{
-			if (referenceMode == FbxLayerElement::eDirect || referenceMode == FbxLayerElement::eByPolygonVertex)
+			if (referenceMode == FbxLayerElement::eDirect || referenceMode == FbxLayerElement::eIndexToDirect)
 			{
 				index = fbxMesh->GetTextureUVIndex(polygonIndex, positionInPolygon);
 			}
