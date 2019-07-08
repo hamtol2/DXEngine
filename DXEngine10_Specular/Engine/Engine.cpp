@@ -48,7 +48,7 @@ void Engine::Update()
 
 void Engine::Render()
 {
-	float color[] = { 0.0f, 0.5f, 0.5f, 1.0f };
+	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	// 렌더 타겟을 설정한 색상으로 칠하기.
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
@@ -97,7 +97,7 @@ bool Engine::InitializeScene()
 	// 텍스처 로드.
 	if (pixelShader->LoadTexture(
 		device,
-		TEXT("Resources/Textures/T_Chr_FPS_D.png"))
+		TEXT("Resources/Textures/Earth.jpg"))
 		== false)
 	{
 		return false;
@@ -112,6 +112,7 @@ bool Engine::InitializeScene()
 	mesh = new Mesh("Resources/Models/sphere.FBX");
 	mesh->SetPosition(0.0f, 0.0f, 0.0f);
 	mesh->SetRotation(-90.0f, 0.0f, 0.0f);
+	mesh->SetScale(2.0f, 2.0f, 2.0f);
 
 	// 초기화.
 	if (mesh->InitializeBuffers(device, vertexShader->GetShaderBuffer()) 

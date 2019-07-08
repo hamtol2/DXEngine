@@ -22,8 +22,18 @@ VertexShader::~VertexShader()
 
 bool VertexShader::CompileShader(ID3D11Device * device)
 {
+	ID3DBlob* errorBlob;
+
 	// 정점 셰이더 컴파일 -> 바이트 코드.
-	HRESULT result = D3DCompileFromFile(fileName, NULL, NULL, entryPoint, profile, NULL, NULL, &shaderBuffer, NULL);
+	HRESULT result = D3DCompileFromFile(fileName, NULL, NULL, entryPoint, profile, NULL, NULL, &shaderBuffer, &errorBlob);
+
+	// 오류 확인.
+	if (errorBlob != NULL)
+	{
+		char* message = (char*)errorBlob->GetBufferPointer();
+		OutputDebugStringA(message);
+	}
+
 	// 오류 확인.
 	if (IsError(result, TEXT("정점 셰이더 컴파일 오류")))
 		return false;

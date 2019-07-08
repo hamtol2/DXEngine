@@ -112,11 +112,13 @@
     <None Include="Shader\PS.fx">
       <Filter>Shader</Filter>
     </None>
-    <None Include="Shader\SpecularPS.fx">
-      <Filter>Shader</Filter>
-    </None>
     <None Include="Shader\SpecularVS.fx">
       <Filter>Shader</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\SpecularPS.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
