@@ -181,7 +181,7 @@ namespace FBXLoader
 		{
 			if (referenceMode == FbxLayerElement::eDirect)
 				index = vertexCounter;
-			else if (referenceMode == FbxLayerElement::eByPolygonVertex)
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
 				index = vertexNormal->GetIndexArray().GetAt(vertexCounter);
 		}
 

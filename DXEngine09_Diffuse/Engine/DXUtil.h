@@ -38,5 +38,22 @@ namespace Memory
 	}
 }
 
+// C4316 경고 해결용.
+// 16바이트 정렬을 위한 연산자 오버로딩 클래스.
+template<size_t T>
+class AlignedAllocation
+{
+public:
+	static void* operator new(size_t size)
+	{
+		return _aligned_malloc(size, T);
+	}
+
+	static void operator delete(void* pointer)
+	{
+		_aligned_free(pointer);
+	}
+};
+
 // 오류 확인용 함수.
 bool IsError(HRESULT hr, LPCTSTR msg);

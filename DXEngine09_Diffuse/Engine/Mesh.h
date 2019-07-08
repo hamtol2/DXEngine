@@ -6,28 +6,12 @@
 
 using namespace DirectX;
 
-class Mesh
+class Mesh : public AlignedAllocation<16>
 {
 private:
-	//struct Vertex
-	//{
-	//	XMFLOAT3 position;
-	//	XMFLOAT4 color;
-	//	XMFLOAT2 textureCoord;
-
-	//	Vertex(float x, float y, float z) :
-	//		position(x, y, z) { }
-	//	Vertex(XMFLOAT3 position) : position(position) { }
-	//	Vertex(XMFLOAT3 position, XMFLOAT4 color) 
-	//		: position(position), color(color) { }
-	//	Vertex(XMFLOAT3 position, XMFLOAT4 color, XMFLOAT2 uv)
-	//		: position(position), color(color), textureCoord(uv) { }
-	//};
-
 	struct PerObjectBuffer
 	{
 		PerObjectBuffer() { ZeroMemory(this, sizeof(this)); }
-
 		XMMATRIX world;
 	};
 
@@ -36,6 +20,18 @@ public:
 	Mesh(float x, float y, float z);
 	Mesh(LPCSTR fbxName);
 	~Mesh();
+
+	// 숙제: SIMD 공부해오기.
+	// 16바이트 정렬을 위한 연산자 오버로딩.
+	//void* operator new(size_t byteSize)
+	//{
+	//	return _aligned_malloc(byteSize, 16);
+	//}
+
+	//void operator delete(void* pointer)
+	//{
+	//	_aligned_free(pointer);
+	//}
 
 	bool InitializeBuffers(ID3D11Device* device, ID3DBlob* vertexShaderBuffer);
 	void RenderBuffers(ID3D11DeviceContext* deviceContext);

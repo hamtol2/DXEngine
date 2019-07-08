@@ -157,7 +157,7 @@ void Mesh::Update(ID3D11DeviceContext * deviceContext)
 	matrixData.world = XMMatrixTranspose(GetWorldMatrix());
 
 	// 상수 버퍼에 연결된 데이터 업데이트하기.
-	deviceContext->UpdateSubresource(constantBuffer, 0, 0, &matrixData, 0, 0);
+	//deviceContext->UpdateSubresource(constantBuffer, 0, 0, &matrixData, 0, 0);
 
 	// 월드 행렬 버퍼 바인딩.
 	deviceContext->VSSetConstantBuffers(0, 1, &constantBuffer);

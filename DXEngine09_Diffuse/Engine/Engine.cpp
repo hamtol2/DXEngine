@@ -109,8 +109,8 @@ bool Engine::InitializeScene()
 
 	// 메쉬 생성.
 	//mesh = new Mesh(0.0f, 0.0f, 0.0f);
-	mesh = new Mesh("Resources/Models/HeroTPP.FBX");
-	mesh->SetPosition(0.0f, -90.0f, 0.0f);
+	mesh = new Mesh("Resources/Models/sphere.FBX");
+	mesh->SetPosition(0.0f, 0.0f, 0.0f);
 	mesh->SetRotation(-90.0f, 0.0f, 0.0f);
 	// 초기화.
 	if (mesh->InitializeBuffers(device, vertexShader->GetShaderBuffer()) 

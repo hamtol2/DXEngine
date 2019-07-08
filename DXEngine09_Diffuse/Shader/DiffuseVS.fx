@@ -36,18 +36,16 @@ vs_output main(vs_input input)
 	output.position = mul(input.position, world);
 
 	// 임시로 라이트 위치 설정.
-	float3 worldLightPosition
-		= float3(-500.0f, 500.0f, -500.0f);
+	float3 worldLightPosition = float3(500.0f, 500.0f, -500.0f);
 
 	// 라이트 방향 구하기.
-	float3 lightDir 
-		= normalize(output.position.xyz - worldLightPosition);
+	float3 lightDir = normalize(output.position.xyz - worldLightPosition);
 
 	// 월드 좌표계기준 노멀.
-	float3 worldNormal 
-		= normalize(mul(input.normal, (float3x3)world));
+	float3 worldNormal = normalize(mul(input.normal, (float3x3)world));
 
 	// 내적 연산(코사인 구하기).
+	// LdotN.
 	output.diffuse = dot(-lightDir, worldNormal);
 
 	output.position = mul(output.position, view);

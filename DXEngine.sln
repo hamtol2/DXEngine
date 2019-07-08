@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine08_FBXLoader", "DXE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine09_Diffuse", "DXEngine09_Diffuse\DXEngine09_Diffuse.vcxproj", "{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine10_Specular", "DXEngine10_Specular\DXEngine10_Specular.vcxproj", "{81A8A7ED-D766-48DC-A419-12254078C345}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x64.Build.0 = Release|x64
 		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x86.ActiveCfg = Release|Win32
 		{DD2412FF-088F-4BF7-97B2-C3CD6BC3EFFD}.Release|x86.Build.0 = Release|Win32
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Debug|x64.ActiveCfg = Debug|x64
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Debug|x64.Build.0 = Debug|x64
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Debug|x86.ActiveCfg = Debug|Win32
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Debug|x86.Build.0 = Debug|Win32
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Release|x64.ActiveCfg = Release|x64
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Release|x64.Build.0 = Release|x64
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Release|x86.ActiveCfg = Release|Win32
+		{81A8A7ED-D766-48DC-A419-12254078C345}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

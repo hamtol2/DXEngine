@@ -17,7 +17,7 @@ float4 main(ps_input input) : SV_TARGET
 
 	// 음영처리 (디퓨즈).
 	float3 diffuse = saturate(input.diffuse);
-	diffuse = diffuse * textureColor.rgb;
+	//diffuse = diffuse * textureColor.rgb;
 
 	return float4(diffuse, 1.0f);
 }
