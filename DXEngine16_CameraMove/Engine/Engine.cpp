@@ -177,9 +177,13 @@ void Engine::ProcessInput()
 		camera->MoveUp(-1.0f * 2.0f);
 	}
 
-	XMFLOAT2 mousePos = input->GetMouseDragState();
-	camera->Yaw(mousePos.x * 0.1f);
-	camera->Pitch(mousePos.y * 0.1f);
+	// 마우스 왼쪽 버튼 눌릴 때만 이동.
+	Mouse::State state = input->GetMouseState();
+	if (state.leftButton)
+	{	
+		camera->Yaw(state.x * 0.1f);
+		camera->Pitch(state.y * 0.1f);
+	}
 }
 
 bool Engine::InitializeScene()

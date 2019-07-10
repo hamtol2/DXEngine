@@ -25,3 +25,8 @@ XMFLOAT2 InputClass::GetMouseDragState()
 	Mouse::State state = mouse->GetState();
 	return XMFLOAT2(state.x, state.y);
 }
+
+Mouse::State InputClass::GetMouseState()
+{
+	return mouse->GetState();
+}

@@ -27,6 +27,7 @@ public:
 
 	void ResetKeyboardState() { keyboard->Reset(); }
 	XMFLOAT2 GetMouseDragState();
+	Mouse::State GetMouseState();
 
 private:
 
