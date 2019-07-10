@@ -73,6 +73,9 @@ void Engine::Render()
 		XMFLOAT3 rot = mesh->GetRotation();
 		rot.y += 3.0f;
 		mesh->SetRotation(rot.x, rot.y, rot.z);
+		//XMFLOAT3 pos = mesh->GetPosition();
+		//pos.x -= 3.0f;
+		//mesh->SetPosition(pos.x, pos.y, pos.z);
 	}
 
 	if (input->IsKeyDown(Keyboard::Keys::D)
@@ -81,6 +84,9 @@ void Engine::Render()
 		XMFLOAT3 rot = mesh->GetRotation();
 		rot.y -= 3.0f;
 		mesh->SetRotation(rot.x, rot.y, rot.z);
+		//XMFLOAT3 pos = mesh->GetPosition();
+		//pos.x += 3.0f;
+		//mesh->SetPosition(pos.x, pos.y, pos.z);
 	}
 
 	// 월드 행렬 바인딩.

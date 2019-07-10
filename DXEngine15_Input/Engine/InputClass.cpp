@@ -15,7 +15,7 @@ InputClass::~InputClass()
 bool InputClass::InitializeInput(HWND hwnd)
 {
 	mouse->SetWindow(hwnd);
-	mouse->SetMode(Mouse::Mode::MODE_RELATIVE);
+	mouse->SetMode(Mouse::Mode::MODE_ABSOLUTE);
 
 	return true;
 }
