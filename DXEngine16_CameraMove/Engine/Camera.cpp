@@ -18,6 +18,7 @@ Camera::Camera(float fovY, float aspectRatio, float nearZ, float farZ)
 
 Camera::~Camera()
 {
+
 }
 
 XMFLOAT3 Camera::GetPosition() const
@@ -81,9 +82,9 @@ void Camera::UpdateCamera()
 
 	// 카메라 벡터 구하기.
 	// 1인칭 카메라.
-	//cameraRight = XMVector3TransformCoord(defaultRight, rotationYTemp);
-	//cameraUp = XMVector3TransformCoord(defaultUp, rotationYTemp);
-	//cameraForward = XMVector3TransformCoord(defaultForward, rotationYTemp);
+	cameraRight = XMVector3TransformCoord(defaultRight, rotationYTemp);
+	cameraUp = XMVector3TransformCoord(defaultUp, rotationYTemp);
+	cameraForward = XMVector3TransformCoord(defaultForward, rotationYTemp);
 
 	// 3인칭 카메라.
 	//cameraRight = XMVector3TransformCoord(defaultRight, rotationMatrix);

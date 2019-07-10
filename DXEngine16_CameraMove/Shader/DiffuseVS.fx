@@ -48,7 +48,6 @@ vs_output main(vs_input input)
 	output.diffuse = dot(-lightDir, worldNormal);
 
 	output.position = mul(output.position, viewProjection);
-
 	output.texCoord = input.texCoord;
 
 	return output;
