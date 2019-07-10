@@ -50,8 +50,8 @@ private:
 	float nearZ;					// 프러스텀 near 거리.
 	float farZ;						// 프러스텀 far 거리.
 
-	float yaw;						// 요 회전 값.
-	float pitch;					// 피치 회전 값.
+	float yaw = 0.0f;						// 요 회전 값.
+	float pitch = 0.0f;					// 피치 회전 값.
 
 	XMMATRIX viewMatrix;
 	XMMATRIX projectionMatrix;
@@ -59,7 +59,7 @@ private:
 	XMVECTOR cameraPosition 
 		= XMVectorSet(0.0f, 0.0f, -200.0f, 1.0f);
 	XMVECTOR cameraLook 
-		= XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
+		= XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
 	XMVECTOR cameraUp 
 		= XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 

@@ -80,9 +80,13 @@ void Camera::UpdateCamera()
 	XMMATRIX rotationYTemp = XMMatrixRotationY(yaw);
 
 	// 카메라 벡터 구하기.
-	cameraRight = XMVector3TransformCoord(defaultRight, rotationYTemp);
-	cameraUp = XMVector3TransformCoord(defaultUp, rotationYTemp);
-	cameraForward = XMVector3TransformCoord(defaultForward, rotationYTemp);
+	//cameraRight = XMVector3TransformCoord(defaultRight, rotationYTemp);
+	//cameraUp = XMVector3TransformCoord(defaultUp, rotationYTemp);
+	//cameraForward = XMVector3TransformCoord(defaultForward, rotationYTemp);
+
+	cameraRight = XMVector3TransformCoord(defaultRight, rotationMatrix);
+	cameraUp = XMVector3TransformCoord(defaultUp, rotationMatrix);
+	cameraForward = XMVector3TransformCoord(defaultForward, rotationMatrix);
 
 	// 카메라 룩 벡터 갱신.
 	cameraLook = cameraPosition + cameraLook;

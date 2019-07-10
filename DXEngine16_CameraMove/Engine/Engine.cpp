@@ -51,6 +51,15 @@ void Engine::Update()
 	//mesh->Update(deviceContext);
 	camera->UpdateCamera();
 
+	PerSceneBuffer matrixData;
+	matrixData.viewProjection = XMMatrixTranspose(
+		camera->GetViewMatrix() * camera->GetProjectionMatrix()
+	);
+	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
+	matrixData.worldCameraPosition = camera->GetPosition();
+
+	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &matrixData, 0, 0);
+
 	// 뷰/투영 행렬 바인딩.
 	deviceContext->VSSetConstantBuffers(1, 1, &constantBuffer);
 }
@@ -167,6 +176,10 @@ void Engine::ProcessInput()
 	{
 		camera->MoveUp(-1.0f * 2.0f);
 	}
+
+	XMFLOAT2 mousePos = input->GetMouseDragState();
+	camera->Yaw(mousePos.x * 0.1f);
+	camera->Pitch(mousePos.y * 0.1f);
 }
 
 bool Engine::InitializeScene()
