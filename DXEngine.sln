@@ -29,6 +29,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine12_Material", "DXEn
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine13_TwoObjects", "DXEngine13_TwoObjects\DXEngine13_TwoObjects.vcxproj", "{509DB973-8598-4935-A1CF-2BF0BB50747D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine14_Camera", "DXEngine14_Camera\DXEngine14_Camera.vcxproj", "{84A092BE-2A76-4BF9-B152-427C8924B088}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine15_Input", "DXEngine15_Input\DXEngine15_Input.vcxproj", "{40BBA576-CA17-43F3-9C4E-3930DEC346FD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -141,6 +145,22 @@ Global
 		{509DB973-8598-4935-A1CF-2BF0BB50747D}.Release|x64.Build.0 = Release|x64
 		{509DB973-8598-4935-A1CF-2BF0BB50747D}.Release|x86.ActiveCfg = Release|Win32
 		{509DB973-8598-4935-A1CF-2BF0BB50747D}.Release|x86.Build.0 = Release|Win32
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Debug|x64.ActiveCfg = Debug|x64
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Debug|x64.Build.0 = Debug|x64
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Debug|x86.ActiveCfg = Debug|Win32
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Debug|x86.Build.0 = Debug|Win32
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Release|x64.ActiveCfg = Release|x64
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Release|x64.Build.0 = Release|x64
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Release|x86.ActiveCfg = Release|Win32
+		{84A092BE-2A76-4BF9-B152-427C8924B088}.Release|x86.Build.0 = Release|Win32
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Debug|x64.ActiveCfg = Debug|x64
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Debug|x64.Build.0 = Debug|x64
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Debug|x86.ActiveCfg = Debug|Win32
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Debug|x86.Build.0 = Debug|Win32
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Release|x64.ActiveCfg = Release|x64
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Release|x64.Build.0 = Release|x64
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Release|x86.ActiveCfg = Release|Win32
+		{40BBA576-CA17-43F3-9C4E-3930DEC346FD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

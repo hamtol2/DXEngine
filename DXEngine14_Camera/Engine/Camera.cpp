@@ -1,9 +1,8 @@
 #include "Camera.h"
 
-
-
 Camera::Camera()
 {
+
 }
 
 Camera::Camera(float fovY, float aspectRatio, float nearZ, float farZ)
@@ -16,7 +15,6 @@ Camera::Camera(float fovY, float aspectRatio, float nearZ, float farZ)
 	UpdateViewMatrix();
 	UpdateProjectMatrix();
 }
-
 
 Camera::~Camera()
 {

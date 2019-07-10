@@ -63,6 +63,9 @@
     <ClCompile Include="Engine\Material.cpp">
       <Filter>Engine\소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Camera.cpp">
+      <Filter>Engine\소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AppWindow.h">
@@ -102,6 +105,9 @@
       <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Material.h">
+      <Filter>Engine\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Camera.h">
       <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

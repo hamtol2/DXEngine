@@ -8,17 +8,17 @@ Engine::Engine(HINSTANCE hinstance) : DXApp(hinstance)
 Engine::~Engine()
 {
 	Memory::SafeDelete(mesh);
+	Memory::SafeDelete(mesh2);
 
 	material->Release();
 	Memory::SafeDelete(material);
+	
+	material2->Release();
+	Memory::SafeDelete(material2);
+
+	Memory::SafeDelete(camera);
 
 	Memory::SafeRelease(constantBuffer);
-
-	//vertexShader->Release();
-	//Memory::SafeDelete(vertexShader);
-
-	//pixelShader->Release();
-	//Memory::SafeDelete(pixelShader);
 }
 
 int Engine::Run()
@@ -154,30 +154,20 @@ bool Engine::InitializeScene()
 
 bool Engine::InitializeTransformation()
 {
-	// 카메라 정보 설정.
-	cameraPosition = XMVectorSet(0.0f, 0.0f, -200.0f, 0.0f);
-	cameraView = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	camerUpVector = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-
-	// 뷰 행렬.
-	XMMATRIX view = XMMatrixLookAtLH(cameraPosition, cameraView, camerUpVector);
-
-	// 투영 행렬.
 	// 시야각 / 종횡비 설정.
 	float fovY = XMConvertToRadians(60.0f);
 	float aspectRatio = static_cast<float>(window->GetScreenWidth()) / static_cast<float>(window->GetScreenHeight());
 
-	XMMATRIX projection = XMMatrixPerspectiveFovLH(fovY, aspectRatio, 1.0f, 10000.0f);
+	// 카메라 객체 생성.
+	camera = new Camera(fovY, aspectRatio, 1.0f, 10000.0f);
 
 	// 버퍼에 담을 구조체 변수 설정.
 	PerSceneBuffer matrixData;
-	matrixData.viewProjection = XMMatrixTranspose(view * projection);
+	matrixData.viewProjection = XMMatrixTranspose(
+		camera->GetViewMatrix() * camera->GetProjectionMatrix()
+	);
 	matrixData.worldLightPosition = XMFLOAT3(500.0f, 500.0f, -500.0f);
-	float x = XMVectorGetX(cameraPosition);
-	float y = XMVectorGetY(cameraPosition);
-	float z = XMVectorGetZ(cameraPosition);
-	matrixData.worldCameraPosition = XMFLOAT3(x, y, z);
-	//matrixData.projection = XMMatrixTranspose(projection);
+	matrixData.worldCameraPosition = camera->GetPosition();
 
 	// 버퍼 생성.
 	// 버퍼 서술자.
