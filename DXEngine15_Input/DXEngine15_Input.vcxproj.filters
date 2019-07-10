@@ -66,6 +66,9 @@
     <ClCompile Include="Engine\Camera.cpp">
       <Filter>Engine\소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\InputClass.cpp">
+      <Filter>Engine\소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AppWindow.h">
@@ -108,6 +111,15 @@
       <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Camera.h">
+      <Filter>Engine\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Keyboard.h">
+      <Filter>Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Mouse.h">
+      <Filter>Library</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\InputClass.h">
       <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

@@ -155,6 +155,7 @@
     <ClCompile Include="Engine\DXApp.cpp" />
     <ClCompile Include="Engine\DXUtil.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Engine\InputClass.cpp" />
     <ClCompile Include="Engine\MainApp.cpp" />
     <ClCompile Include="Engine\Material.cpp" />
     <ClCompile Include="Engine\Mesh.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="Engine\DXApp.h" />
     <ClInclude Include="Engine\DXUtil.h" />
     <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="Engine\InputClass.h" />
     <ClInclude Include="Engine\Material.h" />
     <ClInclude Include="Engine\Mesh.h" />
     <ClInclude Include="Engine\PixelShader.h" />
@@ -180,6 +182,8 @@
     <ClInclude Include="Engine\VertexShader.h" />
     <ClInclude Include="Library\DirectXTex.h" />
     <ClInclude Include="Library\FBXLoader.h" />
+    <ClInclude Include="Library\Keyboard.h" />
+    <ClInclude Include="Library\Mouse.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

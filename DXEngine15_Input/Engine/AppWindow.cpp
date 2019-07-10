@@ -44,6 +44,7 @@ int AppWindow::Run(Engine * engine)
 		}
 		else
 		{
+			engine->ProcessInput();
 			engine->Update();
 			engine->Render();
 		}
@@ -94,19 +95,52 @@ LRESULT AppWindow::MessageProcessor(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
 {
 	switch (msg)
 	{
-		case WM_KEYDOWN:
+		//case WM_KEYDOWN:
+		//{
+		//	if (wParam == VK_ESCAPE)
+		//	{
+		//		if (MessageBox(NULL,
+		//			TEXT("종료 하시겠습니까?"),
+		//			TEXT("종료"), 
+		//			MB_YESNO | MB_ICONQUESTION) == IDYES)
+		//		{
+		//			// 예 버튼 눌리면 창 삭제.
+		//			DestroyWindow(this->hwnd);
+		//		}
+		//	}
+		//}
+		//return 0;
+
+		case WM_ACTIVATEAPP:
 		{
-			if (wParam == VK_ESCAPE)
-			{
-				if (MessageBox(NULL,
-					TEXT("종료 하시겠습니까?"),
-					TEXT("종료"), 
-					MB_YESNO | MB_ICONQUESTION) == IDYES)
-				{
-					// 예 버튼 눌리면 창 삭제.
-					DestroyWindow(this->hwnd);
-				}
-			}
+			Keyboard::ProcessMessage(msg, wParam, lParam);
+			Mouse::ProcessMessage(msg, wParam, lParam);
+		}
+		return 0;
+
+		// 키 입력.
+		case WM_KEYDOWN:
+		case WM_KEYUP:
+		case WM_SYSKEYDOWN:
+		case WM_SYSKEYUP:
+		{
+			Keyboard::ProcessMessage(msg, wParam, lParam);
+		}
+		return 0;
+
+		// 마우스 입력.
+		case WM_INPUT:
+		case WM_MOUSEMOVE:
+		case WM_LBUTTONDOWN:
+		case WM_LBUTTONUP:
+		case WM_RBUTTONDOWN:
+		case WM_RBUTTONUP:
+		case WM_MBUTTONDOWN:
+		case WM_MBUTTONUP:
+		case WM_MOUSEWHEEL:
+		case WM_MOUSEHOVER:
+		{
+			Mouse::ProcessMessage(msg, wParam, lParam);
 		}
 		return 0;
 

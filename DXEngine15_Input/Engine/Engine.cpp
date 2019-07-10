@@ -30,6 +30,9 @@ bool Engine::Init()
 {
 	if (DXApp::Init() == false)
 		return false;
+
+	// 입력 초기화.
+	InitializeInput();
 	
 	// 장면 초기화.
 	if (InitializeScene() == false)
@@ -93,6 +96,21 @@ void Engine::Render()
 
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
+}
+
+void Engine::ProcessInput()
+{
+	// ESC 종료 처리.
+	if (input->IsKeyDown(Keyboard::Keys::Escape))
+	{
+		if (MessageBox(NULL, 
+			TEXT("종료하시겠습니까?"), 
+			TEXT("종료"),
+			MB_YESNO | MB_ICONQUESTION) == IDYES)
+		{
+			DestroyWindow(window->GetWindowHandle());
+		}
+	}
 }
 
 bool Engine::InitializeScene()
@@ -193,4 +211,10 @@ bool Engine::InitializeTransformation()
 	}
 
 	return true;
+}
+
+void Engine::InitializeInput()
+{
+	input = new InputClass();
+	input->InitializeInput(window->GetWindowHandle());
 }
