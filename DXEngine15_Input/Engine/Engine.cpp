@@ -65,6 +65,24 @@ void Engine::Render()
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	// ------- 1번 메시 그리기 ------- //
+
+	// 메시 회전.
+	if (input->IsKeyDown(Keyboard::Keys::A)
+		|| input->IsKeyDown(Keyboard::Keys::Left))
+	{
+		XMFLOAT3 rot = mesh->GetRotation();
+		rot.y += 3.0f;
+		mesh->SetRotation(rot.x, rot.y, rot.z);
+	}
+
+	if (input->IsKeyDown(Keyboard::Keys::D)
+		|| input->IsKeyDown(Keyboard::Keys::Right))
+	{
+		XMFLOAT3 rot = mesh->GetRotation();
+		rot.y -= 3.0f;
+		mesh->SetRotation(rot.x, rot.y, rot.z);
+	}
+
 	// 월드 행렬 바인딩.
 	mesh->Update(deviceContext);
 
