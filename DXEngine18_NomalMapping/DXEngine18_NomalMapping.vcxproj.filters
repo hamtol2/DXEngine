@@ -169,6 +169,12 @@
     <None Include="Shader\WarpDiffuseVS.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\NormalMappingPS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\NormalMappingVS.fx">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\WarpDiffusePS.fx">

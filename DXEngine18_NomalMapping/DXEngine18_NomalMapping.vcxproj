@@ -204,6 +204,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Shader\NormalMappingPS.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shader\NormalMappingVS.fx">
+      <FileType>Document</FileType>
+    </None>
     <FxCompile Include="Shader\WarpDiffusePS.fx">
       <FileType>Document</FileType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
