@@ -100,6 +100,14 @@ namespace FBXLoader
 					// 노멀 읽어오기.
 					vertex.normal = ReadNormal(fbxMesh, vertexIndex, vertexCounter);
 
+					// 탄젠트 읽어오기.
+					vertex.tangent = ReadTangent(fbxMesh, vertexIndex, vertexCounter);
+
+					// 바이노멀 읽어오기.
+					vertex.binormal = ReadBinormal(fbxMesh, vertexIndex, vertexCounter);
+
+
+
 					// 정점 추가.
 					outVertices->push_back(vertex);
 
@@ -190,5 +198,91 @@ namespace FBXLoader
 		normal.z = static_cast<float>(vertexNormal->GetDirectArray().GetAt(index).mData[2]);
 
 		return normal;
+	}
+
+	XMFLOAT3 ReadTangent(FbxMesh * fbxMesh, int controlPointIndex, int vertexCounter)
+	{
+		// 탄젠트가 있는지 확인.
+		if (fbxMesh->GetElementTangentCount() < 1)
+		{
+			MessageBox(NULL, TEXT("탄젠트가 없습니다"), TEXT("오류"), MB_OK);
+			return XMFLOAT3();
+		}
+
+		// 반환용 변수 선언.
+		XMFLOAT3 tangent(0.0f, 0.0f, 0.0f);
+
+		// UV 전체 배열 읽어오기.
+		FbxGeometryElementTangent* vertexTangent 
+			= fbxMesh->GetLayer(0)->GetTangents();
+		FbxLayerElement::EReferenceMode referenceMode 
+			= vertexTangent->GetReferenceMode();
+		FbxLayerElement::EMappingMode mappingMode 
+			= vertexTangent->GetMappingMode();
+
+		int index = 0;
+		if (mappingMode == FbxLayerElement::eByControlPoint)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = controlPointIndex;
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
+				index = vertexTangent->GetIndexArray().GetAt(controlPointIndex);
+		}
+		else if (mappingMode == FbxLayerElement::eByPolygonVertex)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = vertexCounter;
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
+				index = vertexTangent->GetIndexArray().GetAt(vertexCounter);
+		}
+
+		tangent.x = static_cast<float>(vertexTangent->GetDirectArray().GetAt(index).mData[0]);
+		tangent.y = static_cast<float>(vertexTangent->GetDirectArray().GetAt(index).mData[1]);
+		tangent.z = static_cast<float>(vertexTangent->GetDirectArray().GetAt(index).mData[2]);
+
+		return tangent;
+	}
+
+	XMFLOAT3 ReadBinormal(FbxMesh * fbxMesh, int controlPointIndex, int vertexCounter)
+	{
+		// 바이노멀이 있는지 확인.
+		if (fbxMesh->GetElementBinormalCount() < 1)
+		{
+			MessageBox(NULL, TEXT("바이 노멀이 없습니다"), TEXT("오류"), MB_OK);
+			return XMFLOAT3();
+		}
+
+		// 반환용 변수 선언.
+		XMFLOAT3 binormal(0.0f, 0.0f, 0.0f);
+
+		// UV 전체 배열 읽어오기.
+		FbxGeometryElementBinormal* vertexBinormal
+			= fbxMesh->GetLayer(0)->GetBinormals();
+		FbxLayerElement::EReferenceMode referenceMode
+			= vertexBinormal->GetReferenceMode();
+		FbxLayerElement::EMappingMode mappingMode
+			= vertexBinormal->GetMappingMode();
+
+		int index = 0;
+		if (mappingMode == FbxLayerElement::eByControlPoint)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = controlPointIndex;
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
+				index = vertexBinormal->GetIndexArray().GetAt(controlPointIndex);
+		}
+		else if (mappingMode == FbxLayerElement::eByPolygonVertex)
+		{
+			if (referenceMode == FbxLayerElement::eDirect)
+				index = vertexCounter;
+			else if (referenceMode == FbxLayerElement::eIndexToDirect)
+				index = vertexBinormal->GetIndexArray().GetAt(vertexCounter);
+		}
+
+		binormal.x = static_cast<float>(vertexBinormal->GetDirectArray().GetAt(index).mData[0]);
+		binormal.y = static_cast<float>(vertexBinormal->GetDirectArray().GetAt(index).mData[1]);
+		binormal.z = static_cast<float>(vertexBinormal->GetDirectArray().GetAt(index).mData[2]);
+
+		return binormal;
 	}
 }

@@ -9,6 +9,8 @@ struct Vertex
 	XMFLOAT3 position;
 	XMFLOAT2 textureCoord;
 	XMFLOAT3 normal;
+	XMFLOAT3 tangent;
+	XMFLOAT3 binormal;
 
 	Vertex() { }
 	Vertex(float x, float y, float z) :
