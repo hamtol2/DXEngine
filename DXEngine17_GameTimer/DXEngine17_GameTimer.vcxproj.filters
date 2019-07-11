@@ -154,5 +154,17 @@
     <None Include="Shader\SpecularPS.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\Toon2VS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\Toon2PS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\BlinnPhongVS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\BlinnPhongPS.fx">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>

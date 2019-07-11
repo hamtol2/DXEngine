@@ -187,6 +187,22 @@
     <ClInclude Include="Library\Keyboard.h" />
     <ClInclude Include="Library\Mouse.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\Toon2PS.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shader\Toon2VS.fx">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\BlinnPhongPS.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shader\BlinnPhongVS.fx">
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

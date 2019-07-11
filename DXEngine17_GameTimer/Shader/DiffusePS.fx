@@ -16,7 +16,8 @@ float4 main(ps_input input) : SV_TARGET
 	float4 textureColor = diffuseMap.Sample(diffuseSampler, input.texCoord);
 
 	// 음영처리 (디퓨즈).
-	float3 diffuse = saturate(input.diffuse);		// Lambert.
+	//float3 diffuse = saturate(input.diffuse);		// Lambert.
+	float3 diffuse = input.diffuse;					// Lambert.
 	diffuse = diffuse * 0.5f + 0.5f;				// Half Lambert.
 	diffuse = pow(diffuse, 2.0f);					// Half Update.
 	diffuse = diffuse * textureColor.rgb;

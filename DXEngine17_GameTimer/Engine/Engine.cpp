@@ -194,8 +194,8 @@ void Engine::ProcessInput(float deltaTime)
 bool Engine::InitializeScene()
 {
 	// 머티리얼 객체 생성.
-	material = new Material(TEXT("Shader/Specular"));
-	material2 = new Material(TEXT("Shader/Diffuse"));
+	material = new Material(TEXT("Shader/BlinnPhong"));
+	material2 = new Material(TEXT("Shader/Specular"));
 
 	// 머티리얼 컴파일.
 	if (material->CompileShaders(device) == false)

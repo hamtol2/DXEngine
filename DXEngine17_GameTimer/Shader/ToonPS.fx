@@ -26,7 +26,7 @@ float4 main(ps_input input) : SV_TARGET
 
 	// Å÷ ¼ÎÀÌµù.
 	float3 toon = ceil(diffuse * 3) / 3;
-	toon = toon * textureColor.rgb;
+	//toon = toon * textureColor.rgb;
 
 	// °ª Á¤¸®.
 	float3 reflection = normalize(input.reflection);
@@ -48,5 +48,5 @@ float4 main(ps_input input) : SV_TARGET
 	//float3 specularColor = float3(0.5f, 0.5f, 0.0f);
 	//float3 finalColor = diffuse + specular;
 
-	return float4(toon + specular, 1.0f);
+	return float4(toon, 1.0f);
 }
