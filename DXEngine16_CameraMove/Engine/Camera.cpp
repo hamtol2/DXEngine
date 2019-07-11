@@ -79,6 +79,10 @@ void Camera::UpdateCamera()
 
 	// Y 회전 값 저장.
 	XMMATRIX rotationYTemp = XMMatrixRotationY(yaw);
+	//// X 회전 값 저장.
+	//XMMATRIX rotationXTemp = XMMatrixRotationX(pitch);
+
+	//XMMATRIX rotMatrix = rotationYTemp * rotationXTemp;
 
 	// 카메라 벡터 구하기.
 	// 1인칭 카메라.
