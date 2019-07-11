@@ -166,5 +166,13 @@
     <None Include="Shader\BlinnPhongPS.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\WarpDiffuseVS.fx">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\WarpDiffusePS.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

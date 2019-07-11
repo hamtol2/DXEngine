@@ -194,7 +194,7 @@ void Engine::ProcessInput(float deltaTime)
 bool Engine::InitializeScene()
 {
 	// 머티리얼 객체 생성.
-	material = new Material(TEXT("Shader/BlinnPhong"));
+	material = new Material(TEXT("Shader/WarpDiffuse"));
 	material2 = new Material(TEXT("Shader/Specular"));
 
 	// 머티리얼 컴파일.
@@ -211,7 +211,7 @@ bool Engine::InitializeScene()
 
 	// 텍스처 관련 처리.
 	// 텍스처 추가.
-	material->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
+	material->AddTexture(TEXT("Resources/Textures/LightStep.png"));
 	material2->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
 
 	// 텍스처 로드.
