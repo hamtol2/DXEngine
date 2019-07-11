@@ -149,43 +149,45 @@ void Engine::ProcessInput(float deltaTime)
 		}
 	}
 
+	float moveSpeed = 200.0f;
 	// 카메라 이동/회전.
 	if (input->IsKeyDown(Keyboard::Keys::A) || input->IsKeyDown(Keyboard::Keys::Left))
 	{
-		camera->MoveRight(-1.0f * 2.0f);
+		camera->MoveRight(-1.0f * moveSpeed * deltaTime);
 	}
 
 	if (input->IsKeyDown(Keyboard::Keys::D) || input->IsKeyDown(Keyboard::Keys::Right))
 	{
-		camera->MoveRight(1.0f * 2.0f);
+		camera->MoveRight(1.0f * moveSpeed * deltaTime);
 	}
 
 	if (input->IsKeyDown(Keyboard::Keys::W) || input->IsKeyDown(Keyboard::Keys::Up))
 	{
-		camera->MoveForward(1.0f * 2.0f);
+		camera->MoveForward(1.0f * moveSpeed * deltaTime);
 	}
 
 	if (input->IsKeyDown(Keyboard::Keys::S) || input->IsKeyDown(Keyboard::Keys::Down))
 	{
-		camera->MoveForward(-1.0f * 2.0f);
+		camera->MoveForward(-1.0f * moveSpeed * deltaTime);
 	}
 
 	if (input->IsKeyDown(Keyboard::Keys::Q))
 	{
-		camera->MoveUp(1.0f * 2.0f);
+		camera->MoveUp(1.0f * moveSpeed * deltaTime);
 	}
 
 	if (input->IsKeyDown(Keyboard::Keys::E))
 	{
-		camera->MoveUp(-1.0f * 2.0f);
+		camera->MoveUp(-1.0f * moveSpeed * deltaTime);
 	}
 
+	float rotationSpeed = 5.0f;
 	// 마우스 왼쪽 버튼 눌릴 때만 이동.
 	Mouse::State state = input->GetMouseState();
 	if (state.leftButton)
 	{	
-		camera->Yaw(state.x * 0.1f);
-		camera->Pitch(state.y * 0.1f);
+		camera->Yaw(state.x * rotationSpeed * deltaTime);
+		camera->Pitch(state.y * rotationSpeed * deltaTime);
 	}
 }
 
