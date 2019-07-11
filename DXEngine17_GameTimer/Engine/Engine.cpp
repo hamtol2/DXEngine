@@ -211,7 +211,7 @@ bool Engine::InitializeScene()
 
 	// 텍스처 관련 처리.
 	// 텍스처 추가.
-	material->AddTexture(TEXT("Resources/Textures/LightStep.png"));
+	material->AddTexture(TEXT("Resources/Textures/Warp.png"));
 	material2->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
 
 	// 텍스처 로드.
