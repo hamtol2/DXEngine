@@ -204,9 +204,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\NormalMappingPS.fx">
+    <FxCompile Include="Shader\NormalMappingPS.fx">
       <FileType>Document</FileType>
-    </None>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+    </FxCompile>
     <None Include="Shader\NormalMappingVS.fx">
       <FileType>Document</FileType>
     </None>

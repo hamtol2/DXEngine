@@ -106,8 +106,6 @@ namespace FBXLoader
 					// 바이노멀 읽어오기.
 					vertex.binormal = ReadBinormal(fbxMesh, vertexIndex, vertexCounter);
 
-
-
 					// 정점 추가.
 					outVertices->push_back(vertex);
 
