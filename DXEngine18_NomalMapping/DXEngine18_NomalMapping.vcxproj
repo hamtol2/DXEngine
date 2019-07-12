@@ -204,17 +204,23 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Shader\NormalMappingPS.fx">
+    <None Include="Shader\NormalMapping2PS.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shader\NormalMapping2VS.fx">
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Shader\NormalMappingPS.fx">
       <FileType>Document</FileType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-    </FxCompile>
+    </None>
     <None Include="Shader\NormalMappingVS.fx">
       <FileType>Document</FileType>
     </None>
-    <FxCompile Include="Shader\WarpDiffusePS.fx">
+    <None Include="Shader\WarpDiffusePS.fx">
       <FileType>Document</FileType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-    </FxCompile>
+    </None>
     <None Include="Shader\WarpDiffuseVS.fx">
       <FileType>Document</FileType>
     </None>

@@ -172,13 +172,17 @@
     <None Include="Shader\NormalMappingVS.fx">
       <Filter>Shader</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="Shader\WarpDiffusePS.fx">
+    <None Include="Shader\NormalMapping2PS.fx">
       <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="Shader\NormalMappingPS.fx">
+    </None>
+    <None Include="Shader\NormalMapping2VS.fx">
       <Filter>Shader</Filter>
-    </FxCompile>
+    </None>
+    <None Include="Shader\NormalMappingPS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\WarpDiffusePS.fx">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
 </Project>
