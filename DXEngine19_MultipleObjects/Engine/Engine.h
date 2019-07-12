@@ -57,6 +57,9 @@ private:
 	// 타이머 초기화.
 	void InitializeTimer();
 
+	// 메쉬 초기화.
+	bool InitializeMeshes();
+
 private:
 
 	//Material* material;
@@ -67,8 +70,11 @@ private:
 	// 카메라 정보.
 	Camera* camera;					// 카메라.
 
-	Mesh* mesh;
-	Mesh* mesh2;
+	//Mesh* mesh;
+	//Mesh* mesh2;
+
+	// 메시 배열.
+	std::vector<Mesh*> meshes;
 
 	// 입력 클래스.
 	InputClass* input;

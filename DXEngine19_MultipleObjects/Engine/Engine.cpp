@@ -7,8 +7,12 @@ Engine::Engine(HINSTANCE hinstance) : DXApp(hinstance)
 
 Engine::~Engine()
 {
-	Memory::SafeDelete(mesh);
-	Memory::SafeDelete(mesh2);
+	//Memory::SafeDelete(mesh);
+	//Memory::SafeDelete(mesh2);
+	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
+	{
+		Memory::SafeDelete((*mesh));
+	}
 
 	//material->Release();
 	//Memory::SafeDelete(material);
@@ -71,7 +75,7 @@ void Engine::Update(float deltaTime)
 
 void Engine::Render(float deltaTime)
 {
-	float color[] = { 0.0f, 0.25f, 0.25f, 1.0f };
+	float color[] = { 0.0f, 0.7f, 0.7f, 1.0f };
 
 	// 렌더 타겟을 설정한 색상으로 칠하기.
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
@@ -79,34 +83,50 @@ void Engine::Render(float deltaTime)
 	// 뎁스/스텐실 뷰 지우기.
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
-	// 월드 행렬 바인딩.
-	mesh->Update(deviceContext);
+	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
+	{
+		// 월드 행렬 바인딩.
+		(*mesh)->Update(deviceContext);
 
-	// 셰이더 바인딩.
-	mesh->BindShaders(deviceContext);
+		// 셰이더 바인딩.
+		(*mesh)->BindShaders(deviceContext);
 
-	// 텍스처/샘플러 스테이트 바인딩.
-	mesh->BindTextures(deviceContext);
-	mesh->BindSamplerState(deviceContext);
+		// 텍스처/샘플러 스테이트 바인딩.
+		(*mesh)->BindTextures(deviceContext);
+		(*mesh)->BindSamplerState(deviceContext);
 
-	// 메시 버퍼 그리기.
-	mesh->RenderBuffers(deviceContext);
-	// ------- 1번 메시 그리기 ------- //
+		// 메시 버퍼 그리기.
+		(*mesh)->RenderBuffers(deviceContext);
+	}
 
-	// ------- 2번 메시 그리기 ------- //
-	// 월드 행렬 바인딩.
-	mesh2->Update(deviceContext);
+	//// 월드 행렬 바인딩.
+	//mesh->Update(deviceContext);
 
-	// 셰이더 바인딩.
-	mesh2->BindShaders(deviceContext);
+	//// 셰이더 바인딩.
+	//mesh->BindShaders(deviceContext);
 
-	// 텍스처/샘플러 스테이트 바인딩.
-	mesh2->BindTextures(deviceContext);
-	mesh2->BindSamplerState(deviceContext);
+	//// 텍스처/샘플러 스테이트 바인딩.
+	//mesh->BindTextures(deviceContext);
+	//mesh->BindSamplerState(deviceContext);
 
-	// 메시 버퍼 그리기.
-	mesh2->RenderBuffers(deviceContext);
-	// ------- 2번 메시 그리기 ------- //
+	//// 메시 버퍼 그리기.
+	//mesh->RenderBuffers(deviceContext);
+	//// ------- 1번 메시 그리기 ------- //
+
+	//// ------- 2번 메시 그리기 ------- //
+	//// 월드 행렬 바인딩.
+	//mesh2->Update(deviceContext);
+
+	//// 셰이더 바인딩.
+	//mesh2->BindShaders(deviceContext);
+
+	//// 텍스처/샘플러 스테이트 바인딩.
+	//mesh2->BindTextures(deviceContext);
+	//mesh2->BindSamplerState(deviceContext);
+
+	//// 메시 버퍼 그리기.
+	//mesh2->RenderBuffers(deviceContext);
+	//// ------- 2번 메시 그리기 ------- //
 
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
@@ -170,96 +190,50 @@ void Engine::ProcessInput(float deltaTime)
 
 bool Engine::InitializeScene()
 {
-	// 머티리얼 객체 생성.
-	//material = new Material(TEXT("Shader/NormalMapping"));
-	//material2 = new Material(TEXT("Shader/NormalMapping2"));
+	// FBX 이름 변수.
+	LPCSTR fbxTPP = "Resources/Models/HeroTPP.FBX";
+	LPCSTR fbxBox = "Resources/Models/SK_CharM_Cardboard.FBX";
+	LPCSTR fbxCube = "Resources/Models/cube.FBX";
+	LPCSTR fbxSphere = "Resources/Models/sphere.FBX";
 
-	//// 머티리얼 컴파일.
-	//if (material->CompileShaders(device) == false)
-	//	return false;
-	//if (material2->CompileShaders(device) == false)
-	//	return false;
+	// 텍스처 이름 변수.
+	LPCTSTR tppDiffuseTexture = TEXT("Resources/Textures/T_Chr_FPS_D.png");
+	LPCTSTR tppNormalTexture = TEXT("Resources/Textures/T_Chr_FPS_N.png");
 
-	//// 각 셰이더 객체 생성.
-	//if (material->CreateShaders(device) == false)
-	//	return false;
-	//if (material2->CreateShaders(device) == false)
-	//	return false;
+	LPCTSTR boxDiffuseTexture = TEXT("Resources/Textures/Char_M_Cardboard_D.png");
+	LPCTSTR boxNormalTexture = TEXT("Resources/Textures/Char_M_Cardboard_N.png");
 
-	//// 텍스처 관련 처리.
-	//// 텍스처 추가.
-	//material->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
-	//material->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_N.png"));
+	LPCTSTR lightStepTexture = TEXT("Resources/Textures/LightStep.png");
+	LPCTSTR warpTexture = TEXT("Resources/Textures/Warp.png");
 
-	//material2->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
-	//material2->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_N.png"));
-
-	//// 텍스처 로드.
-	//if (material->LoadTextures(device) == false)
-	//	return false;
-	//if (material2->LoadTextures(device) == false)
-	//	return false;
-
-	//// 샘플러 스테이트 생성.
-	//if (material->CreateSamplerState(device) == false)
-	//	return false;
-	//if (material2->CreateSamplerState(device) == false)
-	//	return false;
+	// 쉐이더 이름 변수.
+	LPCTSTR warpDiffuseShader = TEXT("Shader/WarpDiffuse");
+	LPCTSTR normalMappingShader = TEXT("Shader/NormalMapping");
+	LPCTSTR normalMappingShader2 = TEXT("Shader/NormalMapping2");
 
 	// 메쉬 생성.
-	//mesh = new Mesh(0.0f, 0.0f, 0.0f);
-	mesh = new Mesh(
-		"Resources/Models/HeroTPP.FBX",
-		TEXT("Shader/NormalMapping")
-	);
-	mesh->SetPosition(-70.0f, -90.0f, 0.0f);
-	mesh->SetRotation(-90.0f, 180.0f, 0.0f);
+	Mesh* tppWarp = new Mesh(fbxTPP, warpDiffuseShader);
+	tppWarp->SetPosition(-70.0f, -90.0f, 0.0f);
+	tppWarp->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	mesh2 = new Mesh(
-		"Resources/Models/HeroTPP.FBX",
-		TEXT("Shader/NormalMapping2")
-	);
-	mesh2->SetPosition(70.0f, -90.0f, 0.0f);
-	mesh2->SetRotation(-90.0f, 180.0f, 0.0f);
+	tppWarp->AddTexture(lightStepTexture);
+	tppWarp->AddTexture(tppDiffuseTexture);
 
-	// 머티리얼 초기화.
-		// 머티리얼 컴파일.
-	if (mesh->CompileShaders(device) == false)
-		return false;
-	if (mesh2->CompileShaders(device) == false)
-		return false;
+	// 배열에 추가.
+	meshes.push_back(tppWarp);
 
-	// 각 셰이더 객체 생성.
-	if (mesh->CreateShaders(device) == false)
-		return false;
-	if (mesh2->CreateShaders(device) == false)
-		return false;
+	Mesh* tppNormal = new Mesh(fbxTPP, normalMappingShader2);
+	tppNormal->SetPosition(70.0f, -90.0f, 0.0f);
+	tppNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	// 텍스처 관련 처리.
-	// 텍스처 추가.
-	mesh->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
-	mesh->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_N.png"));
+	tppNormal->AddTexture(tppDiffuseTexture);
+	tppNormal->AddTexture(tppNormalTexture);
 
-	mesh2->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_D.png"));
-	mesh2->AddTexture(TEXT("Resources/Textures/T_Chr_FPS_N.png"));
+	// 배열에 추가.
+	meshes.push_back(tppNormal);
 
-	// 텍스처 로드.
-	if (mesh->LoadTextures(device) == false)
-		return false;
-	if (mesh2->LoadTextures(device) == false)
-		return false;
-
-	// 샘플러 스테이트 생성.
-	if (mesh->CreateSamplerState(device) == false)
-		return false;
-
-	if (mesh2->CreateSamplerState(device) == false)
-		return false;
-
-	if (mesh->InitializeBuffers(device) == false)
-		return false;
-
-	if (mesh2->InitializeBuffers(device) == false)
+	// 메시 초기화.
+	if (InitializeMeshes() == false)
 		return false;
 
 	return true;
@@ -318,4 +292,31 @@ void Engine::InitializeTimer()
 {
 	gameTimer = new GameTimer();
 	gameTimer->StartTimer();
+}
+
+bool Engine::InitializeMeshes()
+{
+	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
+	{
+		// 머티리얼 컴파일.
+		if ((*mesh)->CompileShaders(device) == false)
+			return false;
+
+		// 각 셰이더 객체 생성.
+		if ((*mesh)->CreateShaders(device) == false)
+			return false;
+
+		// 텍스처 로드.
+		if ((*mesh)->LoadTextures(device) == false)
+			return false;
+
+		// 샘플러 스테이트 생성.
+		if ((*mesh)->CreateSamplerState(device) == false)
+			return false;
+
+		if ((*mesh)->InitializeBuffers(device) == false)
+			return false;
+	}
+
+	return true;
 }
