@@ -178,7 +178,7 @@ void Engine::ProcessInput(float deltaTime)
 		camera->MoveUp(-1.0f * moveSpeed * deltaTime);
 	}
 
-	float rotationSpeed = 5.0f;
+	float rotationSpeed = 10.0f;
 	// 마우스 왼쪽 버튼 눌릴 때만 이동.
 	Mouse::State state = input->GetMouseState();
 	if (state.leftButton)
@@ -193,15 +193,28 @@ bool Engine::InitializeScene()
 	// FBX 이름 변수.
 	LPCSTR fbxTPP = "Resources/Models/HeroTPP.FBX";
 	LPCSTR fbxBox = "Resources/Models/SK_CharM_Cardboard.FBX";
+	LPCSTR fbxWarrior = "Resources/Models/SK_CharM_Warrior.FBX";
+	LPCSTR fbxBarbarous = "Resources/Models/SK_CharM_Barbarous.FBX";
+	LPCSTR fbxBear = "Resources/Models/Enemy_Bear.FBX";
 	LPCSTR fbxCube = "Resources/Models/cube.FBX";
 	LPCSTR fbxSphere = "Resources/Models/sphere.FBX";
+
 
 	// 텍스처 이름 변수.
 	LPCTSTR tppDiffuseTexture = TEXT("Resources/Textures/T_Chr_FPS_D.png");
 	LPCTSTR tppNormalTexture = TEXT("Resources/Textures/T_Chr_FPS_N.png");
 
+	LPCTSTR warriorDiffuseTexture = TEXT("Resources/Textures/T_CharM_Warrior_D.TGA");
+	LPCTSTR warriorNormalTexture = TEXT("Resources/Textures/T_CharM_Warrior_N.TGA");
+
+	LPCTSTR barbarousDiffuseTexture = TEXT("Resources/Textures/T_Barbarous_D.TGA");
+	LPCTSTR barbarousNormalTexture = TEXT("Resources/Textures/T_Barbarous_N.TGA");
+
 	LPCTSTR boxDiffuseTexture = TEXT("Resources/Textures/Char_M_Cardboard_D.png");
 	LPCTSTR boxNormalTexture = TEXT("Resources/Textures/Char_M_Cardboard_N.png");
+
+	LPCTSTR bearDiffuseTexture = TEXT("Resources/Textures/T_Enemy_Bear_D.TGA");
+	LPCTSTR bearNormalTexture = TEXT("Resources/Textures/T_Enemy_Bear_N.TGA");
 
 	LPCTSTR lightStepTexture = TEXT("Resources/Textures/LightStep.png");
 	LPCTSTR warpTexture = TEXT("Resources/Textures/Warp.png");
@@ -231,6 +244,36 @@ bool Engine::InitializeScene()
 
 	// 배열에 추가.
 	meshes.push_back(tppNormal);
+
+	Mesh* warriorNormal = new Mesh(fbxWarrior, normalMappingShader2);
+	warriorNormal->SetPosition(210.0f, -90.0f, 0.0f);
+	warriorNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+
+	warriorNormal->AddTexture(warriorDiffuseTexture);
+	warriorNormal->AddTexture(warriorNormalTexture);
+
+	// 배열에 추가.
+	meshes.push_back(warriorNormal);
+
+	Mesh* barbarousNormal = new Mesh(fbxBarbarous, normalMappingShader);
+	barbarousNormal->SetPosition(350.0f, -90.0f, 0.0f);
+	barbarousNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+
+	barbarousNormal->AddTexture(barbarousDiffuseTexture);
+	barbarousNormal->AddTexture(barbarousNormalTexture);
+
+	// 배열에 추가.
+	meshes.push_back(barbarousNormal);
+
+	Mesh* bearNormal = new Mesh(fbxBear, normalMappingShader);
+	bearNormal->SetPosition(530.0f, -90.0f, 0.0f);
+	bearNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+
+	bearNormal->AddTexture(bearDiffuseTexture);
+	bearNormal->AddTexture(bearNormalTexture);
+
+	// 배열에 추가.
+	meshes.push_back(bearNormal);
 
 	// 메시 초기화.
 	if (InitializeMeshes() == false)
