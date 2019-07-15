@@ -26,12 +26,13 @@ float4 main(ps_input input) : SV_TARGET
 	diffuse = diffuse * textureColor.rgb;
 
     float3 normal = normalize(input.normal);
-    float3 rimColor = float3(1.0f, 1.0f, 0.0f);
-    //float3 rim = saturate(dot(-input.viewDir, normal));
-    float3 rim = abs(dot(-input.viewDir, normal));
+    float3 rimColor = float3(1.0f, 1.0f, 1.0f);
+    float3 rimDot = abs(1.0f - dot(-input.viewDir, normal));
+    //float3 rim = abs(dot(-input.viewDir, normal));
+    float rimAmount = 0.716f;
+	float rimConstant = 5.0f;
+    //rimDot = pow(rimDot, rimConstant);
+    float rimIntensity = smoothstep(rimAmount - 0.1f, rimAmount + 0.1f, rimDot);
 
-    float rimConstant = 5.0f;
-    //rim = pow(1.0f - rim, rimConstant) * rimColor;
-
-	return float4(diffuse + rim, 1.0f);
+	return float4(rimIntensity * rimColor, 1.0f);
 }

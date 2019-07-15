@@ -42,7 +42,7 @@ bool Engine::Init()
 
 	// 입력 초기화.
 	InitializeInput();
-	
+
 	// 장면 초기화.
 	if (InitializeScene() == false)
 		return false;
@@ -66,6 +66,14 @@ void Engine::Update(float deltaTime)
 	);
 	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
 	matrixData.worldCameraPosition = camera->GetPosition();
+
+	OutputDebugString(TEXT("X: "));
+	OutputDebugString(std::to_wstring(camera->GetPosition().x).c_str());
+	OutputDebugString(TEXT("Y: "));
+	OutputDebugString(std::to_wstring(camera->GetPosition().y).c_str());
+	OutputDebugString(TEXT("Z: "));
+	OutputDebugString(std::to_wstring(camera->GetPosition().z).c_str());
+	OutputDebugString(TEXT("\n"));
 
 	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &matrixData, 0, 0);
 
@@ -111,8 +119,8 @@ void Engine::ProcessInput(float deltaTime)
 	// ESC 종료 처리.
 	if (input->IsKeyDown(Keyboard::Keys::Escape))
 	{
-		if (MessageBox(NULL, 
-			TEXT("종료하시겠습니까?"), 
+		if (MessageBox(NULL,
+			TEXT("종료하시겠습니까?"),
 			TEXT("종료"),
 			MB_YESNO | MB_ICONQUESTION) == IDYES)
 		{
@@ -156,7 +164,7 @@ void Engine::ProcessInput(float deltaTime)
 	// 마우스 왼쪽 버튼 눌릴 때만 이동.
 	Mouse::State state = input->GetMouseState();
 	if (state.leftButton)
-	{	
+	{
 		camera->Yaw(state.x * rotationSpeed * deltaTime);
 		camera->Pitch(state.y * rotationSpeed * deltaTime);
 	}
@@ -205,6 +213,7 @@ bool Engine::InitializeScene()
 	LPCTSTR cubemappingShader = TEXT("Shader/CubeMapping");
 
 	LPCTSTR rimShader = TEXT("Shader/Rim");
+	LPCTSTR rimShader2 = TEXT("Shader/Rim2");
 
 	Mesh* sphere = new Mesh(
 		fbxSphere, cubemappingShader,
@@ -216,14 +225,25 @@ bool Engine::InitializeScene()
 	meshes.push_back(sphere);
 
 	// 메쉬 생성.
-	Mesh* tppRim = new Mesh(fbxTPP, rimShader);
-	tppRim->SetPosition(-210.0f, -90.0f, 0.0f);
+	Mesh* tppRim = new Mesh(fbxSphere, rimShader);
+	tppRim->SetPosition(-210.0f, 0.0f, 0.0f);
 	tppRim->SetRotation(-90.0f, 180.0f, 0.0f);
-	
+
 	tppRim->AddTexture(tppDiffuseTexture);
 
 	// 배열에 추가.
 	meshes.push_back(tppRim);
+
+	// 메쉬 생성.
+	Mesh* tppRim2 = new Mesh(fbxTPP, rimShader2);
+	tppRim2->SetPosition(-350.0f, -90.0f, 0.0f);
+	tppRim2->SetRotation(-90.0f, 180.0f, 0.0f);
+
+	tppRim->AddTexture(tppDiffuseTexture);
+	tppRim->AddTexture(tppNormalTexture);
+
+	// 배열에 추가.
+	meshes.push_back(tppRim2);
 
 	// 메쉬 생성.
 	Mesh* tppWarp = new Mesh(fbxTPP, warpDiffuseShader);
@@ -237,7 +257,7 @@ bool Engine::InitializeScene()
 	meshes.push_back(tppWarp);
 
 	Mesh* tppNormal = new Mesh(
-		fbxTPP, normalMappingShader2, 
+		fbxTPP, normalMappingShader2,
 		D3D11_FILL_WIREFRAME,
 		D3D11_CULL_NONE
 	);
