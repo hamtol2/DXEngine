@@ -16,8 +16,7 @@ SamplerState diffuseSampler;
 float4 main(ps_input input) : SV_TARGET
 {
 	// 텍스처 색상 샘플링(읽어오기).
-	float4 texColor 
-	= diffuseMap.Sample(diffuseSampler, input.texCoord);
+	float4 texColor = diffuseMap.Sample(diffuseSampler, input.texCoord);
 
 	// Half 램버트.
 	float3 diffuse = input.diffuse * 0.5f + 0.5f;
