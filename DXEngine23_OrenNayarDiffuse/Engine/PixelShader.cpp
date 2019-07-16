@@ -30,7 +30,7 @@ bool PixelShader::CompileShader(ID3D11Device * device)
 	this->fileName = (LPCTSTR)buffer;
 
 	// 픽셀 셰이더 컴파일 -> 바이트 코드.
-	HRESULT result = D3DCompileFromFile(fileName, NULL, NULL,
+	HRESULT result = D3DCompileFromFile(fileName, NULL, D3D_COMPILE_STANDARD_FILE_INCLUDE,
 		entryPoint, profile, NULL, NULL, &shaderBuffer, NULL
 	);
 

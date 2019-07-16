@@ -180,6 +180,8 @@ bool Engine::InitializeScene()
 	LPCSTR fbxBear = "Resources/Models/Enemy_Bear.FBX";
 	LPCSTR fbxCube = "Resources/Models/cube.FBX";
 	LPCSTR fbxSphere = "Resources/Models/sphere.FBX";
+	LPCSTR fbxMatPreview
+		= "Resources/Models/SM_MatPreviewMesh_02.FBX";
 
 
 	// 텍스처 이름 변수.
@@ -215,6 +217,7 @@ bool Engine::InitializeScene()
 
 	LPCTSTR rimShader = TEXT("Shader/Rim");
 	LPCTSTR orenNayarShader = TEXT("Shader/OrenNayar");
+	LPCTSTR cookTorranceShader = TEXT("Shader/CookTorrance");
 
 	//Mesh* sphere = new Mesh(
 	//	fbxSphere, cubemappingShader,
@@ -226,9 +229,10 @@ bool Engine::InitializeScene()
 	//meshes.push_back(sphere);
 
 	// 메쉬 생성.
-	Mesh* tppRim = new Mesh(fbxTPP, diffuseShader);
-	tppRim->SetPosition(-70.0f, -90.0f, 0.0f);
-	tppRim->SetRotation(-90.0f, 180.0f, 0.0f);
+	Mesh* tppRim = new Mesh(fbxMatPreview, orenNayarShader);
+	tppRim->SetPosition(-90.0f, -90.0f, 0.0f);
+	tppRim->SetRotation(-90.0f, 90.0f, 0.0f);
+	tppRim->SetScale(0.5f, 0.5f, 0.5f);
 
 	tppRim->AddTexture(tppDiffuseTexture);
 
@@ -236,14 +240,25 @@ bool Engine::InitializeScene()
 	meshes.push_back(tppRim);
 
 	// 메쉬 생성.
-	Mesh* tppOrenNayar = new Mesh(fbxTPP, orenNayarShader);
+	Mesh* tppOrenNayar = new Mesh(fbxTPP, normalMappingShader);
 	tppOrenNayar->SetPosition(70.0f, -90.0f, 0.0f);
 	tppOrenNayar->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	tppRim->AddTexture(tppDiffuseTexture);
+	tppOrenNayar->AddTexture(tppDiffuseTexture);
+	tppOrenNayar->AddTexture(tppNormalTexture);
 
 	// 배열에 추가.
 	meshes.push_back(tppOrenNayar);
+
+	// 메쉬 생성.
+	Mesh* tppCookTorrance = new Mesh(fbxTPP, cookTorranceShader);
+	tppCookTorrance->SetPosition(210.0f, -90.0f, 0.0f);
+	tppCookTorrance->SetRotation(-90.0f, 180.0f, 0.0f);
+
+	tppCookTorrance->AddTexture(tppDiffuseTexture);
+
+	// 배열에 추가.
+	meshes.push_back(tppCookTorrance);
 
 	//// 메쉬 생성.
 	//Mesh* tppWarp = new Mesh(fbxTPP, warpDiffuseShader);

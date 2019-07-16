@@ -128,6 +128,9 @@
     <ClInclude Include="Engine\GameTimer.h">
       <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Shader\Lightings.fx">
+      <Filter>Shader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\VS.fx">
@@ -208,5 +211,13 @@
     <None Include="Shader\OrenNayarVS.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\CookTorranceVS.fx">
+      <Filter>Shader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\CookTorrancePS.fx">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

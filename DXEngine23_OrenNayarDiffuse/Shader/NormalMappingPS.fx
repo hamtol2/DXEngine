@@ -54,6 +54,6 @@ float4 main(ps_input input) : SV_TARGET
 			Glossiness * Glossiness);
 	}
 
-	specular = specular * texColor;
+    specular = specular * texColor;
 	return float4(diffuse + specular, 1.0f);
 }

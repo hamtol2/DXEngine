@@ -62,9 +62,9 @@ float4 main(ps_input input) : SV_TARGET
     float coe = albedo / PI;
 
     float3 texColor = diffuseMap.Sample(diffuseSampler, input.texCoord).rgb;
-    float3 ON_Diffuse = (texColor / PI) * LdotN * (A + B * C * D);
-    //float3 final = ON_Diffuse * texColor;
-    float3 final = ON_Diffuse;
+    float3 ONDiffuse = (1 / PI) * LdotN * (A + B * C * D);
+    float3 baseColor = float3(0.65625f, 0.2827001f, 0.0961619f);
+    float3 final = ONDiffuse * texColor;
 
-    return float4(final, 1.0f);
+    return float4(ONDiffuse * baseColor, 1.0f);
 }
