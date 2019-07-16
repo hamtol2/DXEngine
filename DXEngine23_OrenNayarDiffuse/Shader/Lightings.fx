@@ -1,69 +1,103 @@
-//#define PI 3.141592
-#define PI 1.5
+#define PI 3.141592
 
-float3 OrenNayar(
-	float4 position, 
-	float3 lightPosition,
-	float3 viewPosition, 
-	float roughness,
-	float3 normal)
+float3 Lambert(float3 lightDir, float normal)
+{
+    return saturate(dot(lightDir, normal));
+}
+
+float3 HalfLambert(float3 lightDir, float normal)
+{
+    return dot(lightDir, normal) * 0.5f + 0.5f;
+}
+
+float Phong(float3 lightDir, float3 viewDir, float3 normal, float3 specularPower)
+{
+    float3 NdotL = dot(lightDir, normal);
+    float3 reflection = lightDir - 2.0f * (NdotL) * normal;
+
+	// 스페큘러.
+    float3 specular = 0;
+
+    NdotL = saturate(NdotL);
+
+	// 빛의 강도가 0보다 큰 경우만 계산.
+    if (NdotL.x > 0)
+    {
+        float3 RdotV = dot(reflection, -viewDir);
+        specular = saturate(RdotV);
+        specular = pow(specular, specularPower);
+    }
+
+    return specular;
+}
+
+float3 BlinnPhong(float3 lightDir, float3 viewDir, float3 normal, float3 specularPower)
+{
+    float3 halfVector = normalize(lightDir + viewDir);
+    float3 NdotL = saturate(dot(lightDir, normal));
+
+		// 스페큘러.
+    float3 specular = 0;
+
+	// 빛의 강도가 0보다 클 때만 계산.
+    if (NdotL.x > 0)
+    {
+        float3 NdotH = dot(halfVector, normal);
+        specular = saturate(NdotH);
+        specular = pow(specular, specularPower * specularPower);
+    }
+
+    return specular;
+}
+
+float3 OrenNayar(float4 position, float3 lightPosition, float3 viewPosition, float roughness, float3 normal)
 {
 	// 라이트 벡터.
-	float3 lightDir = normalize(position.xyz - lightPosition);
+    float3 lightDir = normalize(position.xyz - lightPosition);
 
 	// 뷰 벡터.
-	float3 viewDir = normalize(position.xyz - viewPosition);
-
-	// 러프니스.
-	//float roughness = 0.3f;
-	//float PI = 1.0f;
+    float3 viewDir = normalize(position.xyz - viewPosition);
 
 	// 디퓨즈 계산.
-	float roughness2 = roughness * roughness;
-	normal = normalize(normal);
+    float roughness2 = roughness * roughness;
+    normal = normalize(normal);
 
-	float A = 1.0f - 0.5f * roughness2 / (roughness2 + 0.33f);
-	float B = 0.45f * roughness2 / (roughness2 + 0.09f);
+    float A = 1.0f - 0.5f * roughness2 / (roughness2 + 0.33f);
+    float B = 0.45f * roughness2 / (roughness2 + 0.09f);
 
-	// LdotN / VdotN.
-	float LdotN = dot(-lightDir, normal);
-	float VdotN = dot(-viewDir, normal);
+	// NdotL / NdotV.
+    float NdotL = dot(-lightDir, normal);
+    float NdotV = dot(-viewDir, normal);
 
 	// 투영 (X-Y평면으로, Tangent-Binormal 평면).
-	float3 lightProjection = normalize(-lightDir - normal * LdotN);
-	float3 viewProjection = normalize(-viewDir - normal * VdotN);
+    float3 lightProjection = normalize(-lightDir - normal * NdotL);
+    float3 viewProjection = normalize(-viewDir - normal * NdotV);
 
 	// 라이트 투영 벡터와 뷰 투영 벡터 사이의 코사인 값을 계산.
 	//float C = saturate(dot(lightProjection, viewProjection));
-	float C = max(0, dot(lightProjection, viewProjection));
+    float C = max(0, dot(lightProjection, viewProjection));
 
 	// theta_i.
-	float incidentAngle = acos(LdotN);
+    float incidentAngle = acos(NdotL);
 
 	// theta_r.
-	float viewAngle = acos(VdotN);
+    float viewAngle = acos(NdotV);
 
 	// Alpha / Beta 구하기.
-	float alpha = max(incidentAngle, viewAngle);
-	float beta = min(incidentAngle, viewAngle);
+    float alpha = max(incidentAngle, viewAngle);
+    float beta = min(incidentAngle, viewAngle);
 
-	float D = sin(alpha) * tan(beta);
+    float D = sin(alpha) * tan(beta);
 
 	// 0이하 자르기.
-	LdotN = saturate(LdotN);
-	float albedo = 1.0f;
-	float coe = albedo / PI;
+    NdotL = saturate(NdotL);
+    float albedo = 1.0f;
+    float coe = albedo / PI;
 
-	//float3 texColor = diffuseMap.Sample(diffuseSampler, input.texCoord).rgb;
-	float3 ONDiffuse = (1 / PI) * LdotN * (A + B * C * D);
-
-    return ONDiffuse;
+    return (1 / PI) * NdotL * (A + B * C * D);
 }
 
-float3 CookTorrance(
-	float4 position, float3 lightPosition,
-	float3 viewPosition, float3 normal,
-	float roughness)
+float3 CookTorrance(float4 position, float3 lightPosition, float3 viewPosition, float3 normal, float roughness)
 {
     normal = normalize(normal);
     float3 lightDir = normalize(lightPosition - position.xyz);
@@ -94,8 +128,5 @@ float3 CookTorrance(
     float G = min(1.0f, min(g1, g2));
 
 	// Final Cook-Torrance Specular.
-    //float PI = 3.142592f;
-    float CookTorrance = (F * G * D) / (PI * NdotL * NdotV);
-
-    return CookTorrance;
+    return (F * G * D) / (PI * NdotL * NdotV);
 }

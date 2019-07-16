@@ -14,46 +14,6 @@ struct ps_input
 Texture2D diffuseMap;
 SamplerState diffuseSampler;
 
-//float3 CookTorrance(
-//	float4 position, float3 lightPosition, 
-//	float3 viewPosition, float3 normal,
-//	float roughness)
-//{
-//    normal = normalize(normal);
-//    float3 lightDir = lightPosition - position.xyz;
-//    float3 viewDir = viewPosition - position.xyz;
-//    float3 halfVector = normalize(lightDir + viewDir);
-
-//    float NdotL = dot(normal, lightDir);
-//    float NdotV = dot(normal, viewDir);
-//    float NdotH = dot(normal, halfVector);
-//    float VdotH = dot(viewDir, halfVector);
-
-//	// D - Beckman's distribution function.
-//    float roughness2 = roughness * roughness;
-//    float NdotH2 = NdotH * NdotH;
-//    float NdotH4 = NdotH2 * NdotH2;
-
-//    float exponent = -(1.0f - NdotH2) / (roughness2 * NdotH2);
-//    float D = 1 / (roughness2 * NdotH4) * exp(exponent);
-	
-//	// F - Fresnel.
-//	// ∞¯±‚ -> π∞ = F0 = 0.02.
-//    float F0 = 0.2f;
-//    float F = F0 + (1 - F0) * pow(1 - NdotV, 5.0f);
-
-//	// G Term.
-//    float g1 = (2.0f * NdotH * NdotV) / VdotH;
-//    float g2 = (2.0f * NdotH * NdotL) / VdotH;
-//    float G = min(1.0f, min(g1, g2));
-
-//	// Final Cook-Torrance Specular.
-//    float PI = 3.142592f;
-//    float CookTorrance = (F * G * D) / (PI * NdotL * NdotV);
-
-//    return CookTorrance;
-//}
-
 // «»ºø ºŒ¿Ã¥ı.
 float4 main(ps_input input) :  SV_TARGET
 {
