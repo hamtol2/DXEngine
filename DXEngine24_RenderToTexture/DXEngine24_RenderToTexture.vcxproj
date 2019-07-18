@@ -20,7 +20,7 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{82DD1C27-ED73-4BE5-AF24-E7B5431B7390}</ProjectGuid>
+    <ProjectGuid>{5937A9B1-6A40-497A-A759-361CDD2B4C91}</ProjectGuid>
     <RootNamespace>DXEngine01WinSetup</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -161,6 +161,8 @@
     <ClCompile Include="Engine\Material.cpp" />
     <ClCompile Include="Engine\Mesh.cpp" />
     <ClCompile Include="Engine\PixelShader.cpp" />
+    <ClCompile Include="Engine\RenderTexture.cpp" />
+    <ClCompile Include="Engine\RTRenderer.cpp" />
     <ClCompile Include="Engine\Shader.cpp" />
     <ClCompile Include="Engine\Texture.cpp" />
     <ClCompile Include="Engine\Vertex.cpp" />
@@ -178,6 +180,8 @@
     <ClInclude Include="Engine\Material.h" />
     <ClInclude Include="Engine\Mesh.h" />
     <ClInclude Include="Engine\PixelShader.h" />
+    <ClInclude Include="Engine\RenderTexture.h" />
+    <ClInclude Include="Engine\RTRenderer.h" />
     <ClInclude Include="Engine\Shader.h" />
     <ClInclude Include="Engine\Texture.h" />
     <ClInclude Include="Engine\Vertex.h" />

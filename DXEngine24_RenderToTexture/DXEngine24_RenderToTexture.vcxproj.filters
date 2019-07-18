@@ -72,6 +72,12 @@
     <ClCompile Include="Engine\GameTimer.cpp">
       <Filter>Engine\소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\RenderTexture.cpp">
+      <Filter>Engine\소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\RTRenderer.cpp">
+      <Filter>Engine\소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\AppWindow.h">
@@ -130,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="Shader\Lightings.fx">
       <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\RenderTexture.h">
+      <Filter>Engine\헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\RTRenderer.h">
+      <Filter>Engine\헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

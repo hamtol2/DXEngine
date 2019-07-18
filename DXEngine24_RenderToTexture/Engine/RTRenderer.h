@@ -4,7 +4,7 @@
 #include "Vertex.h"
 #include "Mesh.h"
 
-class RTRenderer
+class RTRenderer : public AlignedAllocation<16>
 {
 public:
 	RTRenderer();

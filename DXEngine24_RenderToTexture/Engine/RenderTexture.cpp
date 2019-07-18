@@ -86,7 +86,7 @@ bool RenderTexture::Initialize(
 		static_cast<float>(width),
 		static_cast<float>(height),
 		1.0f, 
-		10000.0f
+		100000.0f
 	);
 
 	return true;

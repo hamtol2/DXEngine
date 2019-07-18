@@ -83,8 +83,28 @@ void Engine::Update(float deltaTime)
 
 void Engine::Render(float deltaTime)
 {
+	// 렌더 투 텍스처.
+	UpdatePerspectiveCamera();
+	RenderToTexture();
+
 	float color[] = { 0.0f, 0.7f, 0.7f, 1.0f };
 	BeginScene(color);
+
+	// 백버퍼에 그리기.
+	RenderScene();
+
+	// 직교모드 카메라 설정.
+	UpdateOrthographicCamera();
+
+	rtMaterial->BindShaders(deviceContext);
+	rtMaterial->BindTexture(deviceContext,
+		renderTexture->GetShaderResourceView()
+	);
+	rtMaterial->BindSamplerState(deviceContext);
+
+	rtRenderer->UpdateBuffers(deviceContext, 100, 100);
+	rtRenderer->RenderBuffers(deviceContext);
+
 
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
@@ -435,8 +455,8 @@ void Engine::RenderToTexture()
 	RenderScene();
 
 	// 렌더 타겟 돌려놓기.
-	deviceContext->OMGetRenderTargets(
-		1, &renderTargetView, &depthStencilView
+	deviceContext->OMSetRenderTargets(
+		1, &renderTargetView, depthStencilView
 	);
 }
 

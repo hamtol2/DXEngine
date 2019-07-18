@@ -6,21 +6,20 @@ cbuffer perObjectBuffer : register(b0)
 
 cbuffer perSceneBuffer : register(b1)
 {
-	matrix view;
-	matrix projection;
+	//matrix view;
+	//matrix projection;
+    matrix viewProjection;
 };
 
 struct vs_input
 {
 	float4 position : POSITION;
-	//float4 color : COLOR;
 	float2 texCoord : TEXCOORD;
 };
 
 struct vs_output
 {
 	float4 position : SV_POSITION;
-	//float4 color : COLOR;
 	float2 texCoord : TEXCOORD;
 };
 
@@ -33,10 +32,8 @@ vs_output main(vs_input input)
 	// 공간 변환.
 	// 월드-뷰-투영 변환.
 	output.position = mul(input.position, world);
-	output.position = mul(output.position, view);
-	output.position = mul(output.position, projection);
+    output.position = mul(output.position, viewProjection);
 
-	//output.color = input.color;
 	output.texCoord = input.texCoord;
 
 	return output;
