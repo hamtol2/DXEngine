@@ -240,12 +240,12 @@ bool Engine::InitializeScene()
 	meshes.push_back(tppRim);
 
 	// 메쉬 생성.
-	Mesh* tppOrenNayar = new Mesh(fbxTPP, normalMappingShader);
-	tppOrenNayar->SetPosition(70.0f, -90.0f, 0.0f);
+	Mesh* tppOrenNayar = new Mesh(fbxSphere, orenNayarShader);
+	tppOrenNayar->SetPosition(70.0f, 0.0f, 0.0f);
 	tppOrenNayar->SetRotation(-90.0f, 180.0f, 0.0f);
 
 	tppOrenNayar->AddTexture(tppDiffuseTexture);
-	tppOrenNayar->AddTexture(tppNormalTexture);
+	//tppOrenNayar->AddTexture(tppNormalTexture);
 
 	// 배열에 추가.
 	meshes.push_back(tppOrenNayar);

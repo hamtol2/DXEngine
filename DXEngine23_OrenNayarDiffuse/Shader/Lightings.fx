@@ -9,39 +9,35 @@ float3 OrenNayar(
 	float3 normal)
 {
 	// 라이트 벡터.
-	float3 lightDir = normalize(position.xyz - lightPosition);
+    float3 lightDir = normalize(lightPosition - position.xyz);
 
 	// 뷰 벡터.
-	float3 viewDir = normalize(position.xyz - viewPosition);
-
-	// 러프니스.
-	//float roughness = 0.3f;
-	//float PI = 1.0f;
+    float3 viewDir = normalize(viewPosition - position.xyz);
 
 	// 디퓨즈 계산.
 	float roughness2 = roughness * roughness;
 	normal = normalize(normal);
 
-	float A = 1.0f - 0.5f * roughness2 / (roughness2 + 0.33f);
-	float B = 0.45f * roughness2 / (roughness2 + 0.09f);
+    float A = 1.0f - 0.5f * (roughness2 / (roughness2 + 0.33f));
+    float B = 0.45f * (roughness2 / (roughness2 + 0.09f));
 
-	// LdotN / VdotN.
-	float LdotN = dot(-lightDir, normal);
-	float VdotN = dot(-viewDir, normal);
+	// NdotL / NdotV.
+    float NdotL = dot(lightDir, normal);
+    float NdotV = dot(viewDir, normal);
 
 	// 투영 (X-Y평면으로, Tangent-Binormal 평면).
-	float3 lightProjection = normalize(-lightDir - normal * LdotN);
-	float3 viewProjection = normalize(-viewDir - normal * VdotN);
+	float3 lightProjection = normalize(lightDir - normal * NdotL);
+	float3 viewProjection = normalize(viewDir - normal * NdotV);
 
 	// 라이트 투영 벡터와 뷰 투영 벡터 사이의 코사인 값을 계산.
 	//float C = saturate(dot(lightProjection, viewProjection));
 	float C = max(0, dot(lightProjection, viewProjection));
 
 	// theta_i.
-	float incidentAngle = acos(LdotN);
+	float incidentAngle = acos(NdotL);
 
 	// theta_r.
-	float viewAngle = acos(VdotN);
+	float viewAngle = acos(NdotV);
 
 	// Alpha / Beta 구하기.
 	float alpha = max(incidentAngle, viewAngle);
@@ -50,12 +46,12 @@ float3 OrenNayar(
 	float D = sin(alpha) * tan(beta);
 
 	// 0이하 자르기.
-	LdotN = saturate(LdotN);
+	NdotL = saturate(NdotL);
 	float albedo = 1.0f;
 	float coe = albedo / PI;
 
 	//float3 texColor = diffuseMap.Sample(diffuseSampler, input.texCoord).rgb;
-	float3 ONDiffuse = (1 / PI) * LdotN * (A + B * C * D);
+    float3 ONDiffuse = coe * NdotL * (A + B * C * D);
 
     return ONDiffuse;
 }
