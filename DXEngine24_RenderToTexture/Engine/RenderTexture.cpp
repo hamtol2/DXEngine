@@ -107,3 +107,10 @@ void RenderTexture::ClearRenderTarget(
 	deviceContext->ClearRenderTargetView(renderTargetView, color);
 	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
+
+void RenderTexture::Release()
+{
+	Memory::SafeRelease(renderTargetTexture);
+	Memory::SafeRelease(renderTargetView);
+	Memory::SafeRelease(shaderResourceView);
+}

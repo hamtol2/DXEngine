@@ -65,6 +65,11 @@ void Material::BindTextures(ID3D11DeviceContext * deviceContext)
 	pixelShader->BindTextures(deviceContext);
 }
 
+void Material::BindTexture(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * shaderResourceView)
+{
+	pixelShader->BindTexture(deviceContext, shaderResourceView);
+}
+
 bool Material::CreateSamplerState(ID3D11Device * device)
 {
 	if (pixelShader->CreateSamplerState(device) == false)

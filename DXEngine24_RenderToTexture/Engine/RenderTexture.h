@@ -32,6 +32,8 @@ public:
 		return projection;
 	}
 
+	void Release();
+
 private:
 
 	ID3D11Texture2D* renderTargetTexture;

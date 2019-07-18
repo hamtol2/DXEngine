@@ -159,6 +159,11 @@ void RTRenderer::RenderBuffers(ID3D11DeviceContext * deviceContext)
 	UINT stride = sizeof(Vertex);
 	UINT offset = 0;
 
+	// 상수 버퍼 바인딩.
+	deviceContext->VSSetConstantBuffers(
+		0, 1, &constantBuffer
+	);
+
 	// 정점 버퍼 전달.
 	deviceContext->IASetVertexBuffers(0, 1, &vertexBuffer, &stride, &offset);
 

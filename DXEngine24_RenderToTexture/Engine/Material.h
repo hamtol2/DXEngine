@@ -18,6 +18,10 @@ public:
 	bool LoadTextures(ID3D11Device* device);
 	void BindTextures(ID3D11DeviceContext* deviceContext);
 
+	void BindTexture(ID3D11DeviceContext* deviceContext,
+		ID3D11ShaderResourceView* shaderResourceView
+	);
+
 	bool CreateSamplerState(ID3D11Device* device);
 	void BindSamplerState(ID3D11DeviceContext* deviceContext);
 

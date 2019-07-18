@@ -153,4 +153,11 @@ void PixelShader::BindTextures(ID3D11DeviceContext * deviceContext)
 	}
 }
 
+void PixelShader::BindTexture(ID3D11DeviceContext * deviceContext, ID3D11ShaderResourceView * shaderResourceView)
+{
+	deviceContext->PSSetShaderResources(
+		0, 1, &shaderResourceView
+	);
+}
+
 	

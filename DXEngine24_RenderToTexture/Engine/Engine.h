@@ -7,6 +7,9 @@
 #include "InputClass.h"
 #include "GameTimer.h"
 
+#include "RenderTexture.h"
+#include "RTRenderer.h"
+
 class Engine : public DXApp
 {
 private:
@@ -26,6 +29,7 @@ public:
 	int Run();
 	bool Init() override;
 	void Update(float deltaTime) override;
+
 	void Render(float deltaTime) override;
 
 	// 입력 처리 함수.
@@ -60,6 +64,15 @@ private:
 	// 메쉬 초기화.
 	bool InitializeMeshes();
 
+	// 렌더 함수.
+	void RenderToTexture();
+	void RenderScene();
+	void BeginScene(float color[]);
+
+	// 투영행렬 업데이트 함수.
+	void UpdatePerspectiveCamera();
+	void UpdateOrthographicCamera();
+
 private:
 
 	//Material* material;
@@ -81,4 +94,9 @@ private:
 
 	// 게임 타이머.
 	GameTimer* gameTimer;
+
+	// 렌더 텍스처 용.
+	RenderTexture* renderTexture;
+	RTRenderer* rtRenderer;
+	Material* rtMaterial;
 };

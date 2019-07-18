@@ -7,24 +7,24 @@ Engine::Engine(HINSTANCE hinstance) : DXApp(hinstance)
 
 Engine::~Engine()
 {
-	//Memory::SafeDelete(mesh);
-	//Memory::SafeDelete(mesh2);
 	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
 	{
 		Memory::SafeDelete((*mesh));
 	}
-
-	//material->Release();
-	//Memory::SafeDelete(material);
-	//
-	//material2->Release();
-	//Memory::SafeDelete(material2);
 
 	Memory::SafeDelete(camera);
 	Memory::SafeDelete(input);
 
 	Memory::SafeRelease(constantBuffer);
 
+	renderTexture->Release();
+	Memory::SafeDelete(renderTexture);
+	
+	rtRenderer->Release();
+	Memory::SafeDelete(rtRenderer);
+
+	rtMaterial->Release();
+	Memory::SafeDelete(rtMaterial);
 }
 
 int Engine::Run()
@@ -58,24 +58,24 @@ void Engine::Update(float deltaTime)
 {
 	// 월드 행렬 바인딩.
 	//mesh->Update(deviceContext);
-	camera->UpdateCamera();
+	//camera->UpdateCamera();
 
-	PerSceneBuffer matrixData;
-	matrixData.viewProjection = XMMatrixTranspose(
-		camera->GetViewMatrix() * camera->GetProjectionMatrix()
-	);
-	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
-	matrixData.worldCameraPosition = camera->GetPosition();
+	//PerSceneBuffer matrixData;
+	//matrixData.viewProjection = XMMatrixTranspose(
+	//	camera->GetViewMatrix() * camera->GetProjectionMatrix()
+	//);
+	//matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
+	//matrixData.worldCameraPosition = camera->GetPosition();
 
-	OutputDebugString(TEXT("X: "));
-	OutputDebugString(std::to_wstring(camera->GetPosition().x).c_str());
-	OutputDebugString(TEXT("Y: "));
-	OutputDebugString(std::to_wstring(camera->GetPosition().y).c_str());
-	OutputDebugString(TEXT("Z: "));
-	OutputDebugString(std::to_wstring(camera->GetPosition().z).c_str());
-	OutputDebugString(TEXT("\n"));
+	//OutputDebugString(TEXT("X: "));
+	//OutputDebugString(std::to_wstring(camera->GetPosition().x).c_str());
+	//OutputDebugString(TEXT("Y: "));
+	//OutputDebugString(std::to_wstring(camera->GetPosition().y).c_str());
+	//OutputDebugString(TEXT("Z: "));
+	//OutputDebugString(std::to_wstring(camera->GetPosition().z).c_str());
+	//OutputDebugString(TEXT("\n"));
 
-	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &matrixData, 0, 0);
+	//deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &matrixData, 0, 0);
 
 	// 뷰/투영 행렬 바인딩.
 	deviceContext->VSSetConstantBuffers(1, 1, &constantBuffer);
@@ -84,31 +84,7 @@ void Engine::Update(float deltaTime)
 void Engine::Render(float deltaTime)
 {
 	float color[] = { 0.0f, 0.7f, 0.7f, 1.0f };
-
-	// 렌더 타겟을 설정한 색상으로 칠하기.
-	deviceContext->ClearRenderTargetView(renderTargetView, color);
-
-	// 뎁스/스텐실 뷰 지우기.
-	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-
-	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
-	{
-		// 월드 행렬 바인딩.
-		(*mesh)->Update(deviceContext);
-
-		// 셰이더 바인딩.
-		(*mesh)->BindShaders(deviceContext);
-
-		// 텍스처/샘플러 스테이트 바인딩.
-		(*mesh)->BindTextures(deviceContext);
-		(*mesh)->BindSamplerState(deviceContext);
-
-		// 래스터라이저 스테이트 바인딩.
-		(*mesh)->BindRasterizerState(deviceContext);
-
-		// 메시 버퍼 그리기.
-		(*mesh)->RenderBuffers(deviceContext);
-	}
+	BeginScene(color);
 
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
@@ -319,6 +295,21 @@ bool Engine::InitializeScene()
 	if (InitializeMeshes() == false)
 		return false;
 
+	// RT Material 초기화.
+	rtMaterial = new Material(TEXT("Shader/"));
+
+	// 컴파일.
+	if (rtMaterial->CompileShaders(device) == false)
+		return false;
+
+	// 셰이더 객체 생성.
+	if (rtMaterial->CreateShaders(device) == false)
+		return false;
+
+	// 샘플러 스테이트 생성.
+	if (rtMaterial->CreateSamplerState(device) == false)
+		return false;
+
 	return true;
 }
 
@@ -361,6 +352,22 @@ bool Engine::InitializeTransformation()
 	{
 		return false;
 	}
+
+	// RenderTexture * RTRender 초기화.
+	renderTexture = new RenderTexture();
+	if (renderTexture->Initialize(
+		device, camera,
+		window->GetScreenWidth(),
+		window->GetScreenHeight()) == false)
+		return false;
+
+	rtRenderer = new RTRenderer();
+	if (rtRenderer->Initialize(device,
+		rtMaterial->GetVertexShader()->GetShaderBuffer(),
+		window->GetScreenWidth(),
+		window->GetScreenHeight(),
+		400, 400) == false)
+		return false;
 
 	return true;
 }
@@ -407,4 +414,87 @@ bool Engine::InitializeMeshes()
 	}
 
 	return true;
+}
+
+void Engine::RenderToTexture()
+{
+	// 렌더 타겟 바꾸기.
+	renderTexture->SetRenderTarget(
+		deviceContext, depthStencilView
+	);
+
+	// 배경색 칠하기.
+	float color[] = { 0.0f, 0.0f, 1.0f, 1.0f };
+	renderTexture->ClearRenderTarget(
+		deviceContext,
+		depthStencilView, 
+		color
+	);
+
+	// 씬 그리기.
+	RenderScene();
+
+	// 렌더 타겟 돌려놓기.
+	deviceContext->OMGetRenderTargets(
+		1, &renderTargetView, &depthStencilView
+	);
+}
+
+void Engine::RenderScene()
+{
+	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
+	{
+		// 월드 행렬 바인딩.
+		(*mesh)->Update(deviceContext);
+
+		// 셰이더 바인딩.
+		(*mesh)->BindShaders(deviceContext);
+
+		// 텍스처/샘플러 스테이트 바인딩.
+		(*mesh)->BindTextures(deviceContext);
+		(*mesh)->BindSamplerState(deviceContext);
+
+		// 래스터라이저 스테이트 바인딩.
+		(*mesh)->BindRasterizerState(deviceContext);
+
+		// 메시 버퍼 그리기.
+		(*mesh)->RenderBuffers(deviceContext);
+	}
+}
+
+void Engine::BeginScene(float color[])
+{
+	// 렌더 타겟을 설정한 색상으로 칠하기.
+	deviceContext->ClearRenderTargetView(renderTargetView, color);
+
+	// 뎁스/스텐실 뷰 지우기.
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+}
+
+void Engine::UpdatePerspectiveCamera()
+{
+	camera->UpdateCamera();
+
+	PerSceneBuffer matrixData;
+	matrixData.viewProjection = XMMatrixTranspose(
+		camera->GetViewMatrix() * camera->GetProjectionMatrix()
+	);
+	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
+	matrixData.worldCameraPosition = camera->GetPosition();
+
+	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &matrixData, 0, 0);
+}
+
+void Engine::UpdateOrthographicCamera()
+{
+	camera->UpdateCamera();
+
+	PerSceneBuffer matrixData;
+	matrixData.viewProjection = XMMatrixTranspose(
+		camera->GetViewMatrix() * renderTexture->GetProjectionMatrix()
+	);
+	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
+	matrixData.worldCameraPosition = camera->GetPosition();
+
+	deviceContext->UpdateSubresource(constantBuffer, 0, NULL, &matrixData, 0, 0);
 }
