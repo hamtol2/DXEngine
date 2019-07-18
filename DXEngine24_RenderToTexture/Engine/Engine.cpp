@@ -102,9 +102,17 @@ void Engine::Render(float deltaTime)
 	);
 	rtMaterial->BindSamplerState(deviceContext);
 
-	rtRenderer->UpdateBuffers(deviceContext, 100, 100);
+	rtRenderer->UpdateBuffers(deviceContext, 100, 50);
 	rtRenderer->RenderBuffers(deviceContext);
 
+	rtRenderer->UpdateBuffers(deviceContext, 1000, 50);
+	rtRenderer->RenderBuffers(deviceContext);
+
+	rtRenderer->UpdateBuffers(deviceContext, 100, 500);
+	rtRenderer->RenderBuffers(deviceContext);
+
+	rtRenderer->UpdateBuffers(deviceContext, 1000, 500);
+	rtRenderer->RenderBuffers(deviceContext);
 
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
@@ -215,14 +223,14 @@ bool Engine::InitializeScene()
 	LPCTSTR orenNayarShader = TEXT("Shader/OrenNayar");
 	LPCTSTR cookTorranceShader = TEXT("Shader/CookTorrance");
 
-	//Mesh* sphere = new Mesh(
-	//	fbxSphere, cubemappingShader,
-	//	D3D11_FILL_SOLID, D3D11_CULL_NONE
-	//);
-	//sphere->SetPosition(0.0f, 0.0f, 0.0f);
-	//sphere->SetScale(200.0f, 200.0f, 200.0f);
-	//sphere->AddTexture(coitTowerTexture);
-	//meshes.push_back(sphere);
+	Mesh* sphere = new Mesh(
+		fbxSphere, cubemappingShader,
+		D3D11_FILL_SOLID, D3D11_CULL_NONE
+	);
+	sphere->SetPosition(0.0f, 0.0f, 0.0f);
+	sphere->SetScale(200.0f, 200.0f, 200.0f);
+	sphere->AddTexture(coitTowerTexture);
+	meshes.push_back(sphere);
 
 	// 메쉬 생성.
 	Mesh* tppRim = new Mesh(fbxMatPreview, orenNayarShader);
@@ -256,60 +264,60 @@ bool Engine::InitializeScene()
 	// 배열에 추가.
 	meshes.push_back(tppCookTorrance);
 
-	//// 메쉬 생성.
-	//Mesh* tppWarp = new Mesh(fbxTPP, warpDiffuseShader);
-	//tppWarp->SetPosition(-70.0f, -90.0f, 0.0f);
-	//tppWarp->SetRotation(-90.0f, 180.0f, 0.0f);
+	// 메쉬 생성.
+	Mesh* tppWarp = new Mesh(fbxTPP, warpDiffuseShader);
+	tppWarp->SetPosition(-70.0f, -90.0f, 0.0f);
+	tppWarp->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	//tppWarp->AddTexture(lightStepTexture);
-	//tppWarp->AddTexture(tppDiffuseTexture);
+	tppWarp->AddTexture(lightStepTexture);
+	tppWarp->AddTexture(tppDiffuseTexture);
 
-	//// 배열에 추가.
-	//meshes.push_back(tppWarp);
+	// 배열에 추가.
+	meshes.push_back(tppWarp);
 
-	//Mesh* tppNormal = new Mesh(
-	//	fbxTPP, normalMappingShader2,
-	//	D3D11_FILL_WIREFRAME,
-	//	D3D11_CULL_NONE
-	//);
-	//tppNormal->SetPosition(70.0f, -90.0f, 0.0f);
-	//tppNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+	Mesh* tppNormal = new Mesh(
+		fbxTPP, normalMappingShader2,
+		D3D11_FILL_WIREFRAME,
+		D3D11_CULL_NONE
+	);
+	tppNormal->SetPosition(70.0f, -90.0f, 0.0f);
+	tppNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	//tppNormal->AddTexture(tppDiffuseTexture);
-	//tppNormal->AddTexture(tppNormalTexture);
+	tppNormal->AddTexture(tppDiffuseTexture);
+	tppNormal->AddTexture(tppNormalTexture);
 
-	//// 배열에 추가.
-	//meshes.push_back(tppNormal);
+	// 배열에 추가.
+	meshes.push_back(tppNormal);
 
-	//Mesh* warriorNormal = new Mesh(fbxWarrior, normalMappingShader2);
-	//warriorNormal->SetPosition(210.0f, -90.0f, 0.0f);
-	//warriorNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+	Mesh* warriorNormal = new Mesh(fbxWarrior, normalMappingShader2);
+	warriorNormal->SetPosition(210.0f, -90.0f, 0.0f);
+	warriorNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	//warriorNormal->AddTexture(warriorDiffuseTexture);
-	//warriorNormal->AddTexture(warriorNormalTexture);
+	warriorNormal->AddTexture(warriorDiffuseTexture);
+	warriorNormal->AddTexture(warriorNormalTexture);
 
-	//// 배열에 추가.
-	//meshes.push_back(warriorNormal);
+	// 배열에 추가.
+	meshes.push_back(warriorNormal);
 
-	//Mesh* barbarousNormal = new Mesh(fbxBarbarous, normalMappingShader);
-	//barbarousNormal->SetPosition(350.0f, -90.0f, 0.0f);
-	//barbarousNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+	Mesh* barbarousNormal = new Mesh(fbxBarbarous, normalMappingShader);
+	barbarousNormal->SetPosition(350.0f, -90.0f, 0.0f);
+	barbarousNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	//barbarousNormal->AddTexture(barbarousDiffuseTexture);
-	//barbarousNormal->AddTexture(barbarousNormalTexture);
+	barbarousNormal->AddTexture(barbarousDiffuseTexture);
+	barbarousNormal->AddTexture(barbarousNormalTexture);
 
-	//// 배열에 추가.
-	//meshes.push_back(barbarousNormal);
+	// 배열에 추가.
+	meshes.push_back(barbarousNormal);
 
-	//Mesh* bearNormal = new Mesh(fbxBear, normalMappingShader);
-	//bearNormal->SetPosition(530.0f, -90.0f, 0.0f);
-	//bearNormal->SetRotation(-90.0f, 180.0f, 0.0f);
+	Mesh* bearNormal = new Mesh(fbxBear, normalMappingShader);
+	bearNormal->SetPosition(530.0f, -90.0f, 0.0f);
+	bearNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	//bearNormal->AddTexture(bearDiffuseTexture);
-	//bearNormal->AddTexture(bearNormalTexture);
+	bearNormal->AddTexture(bearDiffuseTexture);
+	bearNormal->AddTexture(bearNormalTexture);
 
-	//// 배열에 추가.
-	//meshes.push_back(bearNormal);
+	// 배열에 추가.
+	meshes.push_back(bearNormal);
 
 	// 메시 초기화.
 	if (InitializeMeshes() == false)
@@ -511,7 +519,7 @@ void Engine::UpdateOrthographicCamera()
 
 	PerSceneBuffer matrixData;
 	matrixData.viewProjection = XMMatrixTranspose(
-		camera->GetViewMatrix() * renderTexture->GetProjectionMatrix()
+		renderTexture->GetViewMatrix() * renderTexture->GetProjectionMatrix()
 	);
 	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
 	matrixData.worldCameraPosition = camera->GetPosition();

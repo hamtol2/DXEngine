@@ -159,5 +159,3 @@ void PixelShader::BindTexture(ID3D11DeviceContext * deviceContext, ID3D11ShaderR
 		0, 1, &shaderResourceView
 	);
 }
-
-	

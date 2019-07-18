@@ -32,6 +32,8 @@ public:
 		return projection;
 	}
 
+	const XMMATRIX GetViewMatrix() const { return view; }
+
 	void Release();
 
 private:
