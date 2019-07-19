@@ -51,6 +51,10 @@ bool Engine::Init()
 	if (InitializeTransformation() == false)
 		return false;
 
+	// 디퍼드 버퍼/렌더러 초기화.
+	if (InitializeDeferrecBuffers() == false)
+		return false;
+
 	return true;
 }
 
@@ -83,32 +87,24 @@ void Engine::Update(float deltaTime)
 
 void Engine::Render(float deltaTime)
 {
+	// 렌더 투 텍스처.
+	UpdatePerspectiveCamera();
+	RenderToTexture();
+
 	float color[] = { 0.0f, 0.7f, 0.7f, 1.0f };
+	BeginScene(color);
 
-	// 렌더 타겟을 설정한 색상으로 칠하기.
-	deviceContext->ClearRenderTargetView(renderTargetView, color);
+	// 직교 투영.
+	UpdateOthographicCamera();
 
-	// 뎁스/스텐실 뷰 지우기.
-	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+	// 머티리얼 바인딩.
+	deferredMaterial->BindShaders(deviceContext);
+	deferredMaterial->BindSamplerState(deviceContext);
+	deferredMaterial->BindTextures(deviceContext);
 
-	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
-	{
-		// 월드 행렬 바인딩.
-		(*mesh)->Update(deviceContext);
-
-		// 셰이더 바인딩.
-		(*mesh)->BindShaders(deviceContext);
-
-		// 텍스처/샘플러 스테이트 바인딩.
-		(*mesh)->BindTextures(deviceContext);
-		(*mesh)->BindSamplerState(deviceContext);
-
-		// 래스터라이저 스테이트 바인딩.
-		(*mesh)->BindRasterizerState(deviceContext);
-
-		// 메시 버퍼 그리기.
-		(*mesh)->RenderBuffers(deviceContext);
-	}
+	// 디퍼드 렌더러에서 그리기.
+	deferredRenderer->Update(deviceContext);
+	deferredRenderer->Render(deviceContext);
 
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
@@ -219,6 +215,8 @@ bool Engine::InitializeScene()
 	LPCTSTR orenNayarShader = TEXT("Shader/OrenNayar");
 	LPCTSTR cookTorranceShader = TEXT("Shader/CookTorrance");
 
+	LPCTSTR deferredShader = TEXT("Shader/Deferred");
+
 	//Mesh* sphere = new Mesh(
 	//	fbxSphere, cubemappingShader,
 	//	D3D11_FILL_SOLID, D3D11_CULL_NONE
@@ -229,29 +227,29 @@ bool Engine::InitializeScene()
 	//meshes.push_back(sphere);
 
 	// 메쉬 생성.
-	Mesh* tppRim = new Mesh(fbxMatPreview, orenNayarShader);
-	tppRim->SetPosition(-90.0f, -90.0f, 0.0f);
+	Mesh* tppRim = new Mesh(fbxWarrior, deferredShader);
+	tppRim->SetPosition(-70.0f, -90.0f, 0.0f);
 	tppRim->SetRotation(-90.0f, 90.0f, 0.0f);
-	tppRim->SetScale(0.5f, 0.5f, 0.5f);
+	//tppRim->SetScale(0.5f, 0.5f, 0.5f);
 
-	tppRim->AddTexture(tppDiffuseTexture);
+	tppRim->AddTexture(warriorDiffuseTexture);
 
 	// 배열에 추가.
 	meshes.push_back(tppRim);
 
 	// 메쉬 생성.
-	Mesh* tppOrenNayar = new Mesh(fbxSphere, orenNayarShader);
-	tppOrenNayar->SetPosition(70.0f, 0.0f, 0.0f);
+	Mesh* tppOrenNayar = new Mesh(fbxBear, deferredShader);
+	tppOrenNayar->SetPosition(70.0f, -90.0f, 0.0f);
 	tppOrenNayar->SetRotation(-90.0f, 180.0f, 0.0f);
 
-	tppOrenNayar->AddTexture(tppDiffuseTexture);
+	tppOrenNayar->AddTexture(bearDiffuseTexture);
 	//tppOrenNayar->AddTexture(tppNormalTexture);
 
 	// 배열에 추가.
 	meshes.push_back(tppOrenNayar);
 
 	// 메쉬 생성.
-	Mesh* tppCookTorrance = new Mesh(fbxTPP, cookTorranceShader);
+	Mesh* tppCookTorrance = new Mesh(fbxTPP, deferredShader);
 	tppCookTorrance->SetPosition(210.0f, -90.0f, 0.0f);
 	tppCookTorrance->SetRotation(-90.0f, 180.0f, 0.0f);
 
@@ -261,7 +259,7 @@ bool Engine::InitializeScene()
 	meshes.push_back(tppCookTorrance);
 
 	//// 메쉬 생성.
-	//Mesh* tppWarp = new Mesh(fbxTPP, warpDiffuseShader);
+	//Mesh* tppWarp = new Mesh(fbxTPP, deferredShader);
 	//tppWarp->SetPosition(-70.0f, -90.0f, 0.0f);
 	//tppWarp->SetRotation(-90.0f, 180.0f, 0.0f);
 
@@ -272,7 +270,7 @@ bool Engine::InitializeScene()
 	//meshes.push_back(tppWarp);
 
 	//Mesh* tppNormal = new Mesh(
-	//	fbxTPP, normalMappingShader2,
+	//	fbxTPP, deferredShader,
 	//	D3D11_FILL_WIREFRAME,
 	//	D3D11_CULL_NONE
 	//);
@@ -285,7 +283,7 @@ bool Engine::InitializeScene()
 	//// 배열에 추가.
 	//meshes.push_back(tppNormal);
 
-	//Mesh* warriorNormal = new Mesh(fbxWarrior, normalMappingShader2);
+	//Mesh* warriorNormal = new Mesh(fbxWarrior, deferredShader);
 	//warriorNormal->SetPosition(210.0f, -90.0f, 0.0f);
 	//warriorNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
@@ -295,7 +293,7 @@ bool Engine::InitializeScene()
 	//// 배열에 추가.
 	//meshes.push_back(warriorNormal);
 
-	//Mesh* barbarousNormal = new Mesh(fbxBarbarous, normalMappingShader);
+	//Mesh* barbarousNormal = new Mesh(fbxBarbarous, deferredShader);
 	//barbarousNormal->SetPosition(350.0f, -90.0f, 0.0f);
 	//barbarousNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
@@ -305,7 +303,7 @@ bool Engine::InitializeScene()
 	//// 배열에 추가.
 	//meshes.push_back(barbarousNormal);
 
-	//Mesh* bearNormal = new Mesh(fbxBear, normalMappingShader);
+	//Mesh* bearNormal = new Mesh(fbxBear, deferredShader);
 	//bearNormal->SetPosition(530.0f, -90.0f, 0.0f);
 	//bearNormal->SetRotation(-90.0f, 180.0f, 0.0f);
 
@@ -411,28 +409,87 @@ bool Engine::InitializeMeshes()
 
 void Engine::RenderToTexture()
 {
+	// 렌더 타겟 바꾸기.
+	deferredBuffer->SetRenderTargets(
+		deviceContext, depthStencilView
+	);
 
+	// 렌더 타겟 뷰 지우기.
+	float color[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	deferredBuffer->ClearRenderTargets(deviceContext, depthStencilView, color);
+
+	// 씬 그리기.
+	RenderScene();
+
+	// 렌더 타겟을 다시 프레임 버퍼(백버퍼)로 돌려놓기.
+	deviceContext->OMSetRenderTargets(
+		1, &renderTargetView, depthStencilView
+	);
 }
 
 void Engine::RenderScene()
 {
+	for (auto mesh = meshes.begin(); mesh < meshes.end(); ++mesh)
+	{
+		// 월드 행렬 바인딩.
+		(*mesh)->Update(deviceContext);
 
+		// 셰이더 바인딩.
+		(*mesh)->BindShaders(deviceContext);
+
+		// 텍스처/샘플러 스테이트 바인딩.
+		(*mesh)->BindTextures(deviceContext);
+		(*mesh)->BindSamplerState(deviceContext);
+
+		// 래스터라이저 스테이트 바인딩.
+		(*mesh)->BindRasterizerState(deviceContext);
+
+		// 메시 버퍼 그리기.
+		(*mesh)->RenderBuffers(deviceContext);
+	}
 }
 
 void Engine::BeginScene(float color[])
 {
+	// 렌더 타겟을 설정한 색상으로 칠하기.
+	deviceContext->ClearRenderTargetView(renderTargetView, color);
 
+	// 뎁스/스텐실 뷰 지우기.
+	deviceContext->ClearDepthStencilView(depthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
 // 투영행렬 업데이트 함수.
 void Engine::UpdatePerspectiveCamera()
 {
+	camera->UpdateCamera();
 
+	PerSceneBuffer matrixData;
+	matrixData.viewProjection = XMMatrixTranspose(
+		camera->GetViewMatrix() * camera->GetProjectionMatrix()
+	);
+	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
+	matrixData.worldCameraPosition = camera->GetPosition();
+
+	deviceContext->UpdateSubresource(
+		constantBuffer, 0, NULL, &matrixData, 0, 0
+	);
 }
 
 void Engine::UpdateOthographicCamera()
 {
+	camera->UpdateCamera();
 
+	PerSceneBuffer matrixData;
+	matrixData.viewProjection = XMMatrixTranspose(
+		deferredRenderer->GetViewMatrix() * 
+		deferredRenderer->GetProjectionMatrix()
+	);
+	matrixData.worldLightPosition = XMFLOAT3(5000.0f, 5000.0f, -5000.0f);
+	matrixData.worldCameraPosition = camera->GetPosition();
+
+	deviceContext->UpdateSubresource(
+		constantBuffer, 0, NULL, &matrixData, 0, 0
+	);
 }
 
 // 디퍼드 버퍼 초기화.
@@ -449,7 +506,31 @@ bool Engine::InitializeDeferrecBuffers()
 	for (int ix = 0; ix < BUFFERCOUNT; ++ix)
 	{
 		Texture newTex;
-		//newTex.textureResourceView = deferredBuffer->get
-		//deferredMaterial->AddTexture()
+		newTex.textureResourceView 
+			= deferredBuffer->GetShaderResourceView(ix);
+		deferredMaterial->AddTexture(newTex);
 	}
+
+	// 컴파일.
+	if (deferredMaterial->CompileShaders(device) == false)
+		return false;
+
+	if (deferredMaterial->CreateShaders(device) == false)
+		return false;
+
+	if (deferredMaterial->CreateSamplerState(device) == false)
+		return false;
+
+	// 디퍼드 렌더러.
+	deferredRenderer = new DeferredRenderer();
+	if (deferredRenderer->Initialize(
+		device,
+		deferredMaterial->GetVertexShader()->GetShaderBuffer(),
+		camera,
+		window->GetScreenWidth(),
+		window->GetScreenHeight()
+		) == false)
+		return false;
+
+	return true;
 }

@@ -24,6 +24,10 @@ public:
 	void Release();
 
 	// Getter.
+	ID3D11ShaderResourceView* GetShaderResourceView(int index) const
+	{
+		return shaderResourceViewArray[index];
+	}
 
 private:
 

@@ -226,6 +226,18 @@
     <None Include="Shader\CookTorranceVS.fx">
       <Filter>Shader</Filter>
     </None>
+    <None Include="Shader\DeferredVS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\DeferredDiffusePS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\DeferredDiffuseVS.fx">
+      <Filter>Shader</Filter>
+    </None>
+    <None Include="Shader\DeferredPS.fx">
+      <Filter>Shader</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\CookTorrancePS.fx">
