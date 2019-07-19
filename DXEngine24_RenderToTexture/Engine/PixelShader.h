@@ -22,6 +22,7 @@ public:
 
 	// 텍스처 관련.
 	void AddTexture(LPCTSTR fileName);
+	void AddTexture(Texture& texture);
 	//bool LoadTexture(ID3D11Device* device, LPCTSTR fileName);
 	bool LoadTextures(ID3D11Device* device);
 	void BindTextures(ID3D11DeviceContext* deviceContext);

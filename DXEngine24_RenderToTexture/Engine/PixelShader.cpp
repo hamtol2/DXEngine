@@ -118,6 +118,11 @@ void PixelShader::AddTexture(LPCTSTR fileName)
 	textures.push_back(newTexture);
 }
 
+void PixelShader::AddTexture(Texture & texture)
+{
+	textures.push_back(texture);
+}
+
 bool PixelShader::LoadTextures(ID3D11Device * device)
 {
 	// 텍스처 로드.

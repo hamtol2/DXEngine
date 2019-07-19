@@ -51,6 +51,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine23_OrenNayarDiffuse
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine24_RenderToTexture", "DXEngine24_RenderToTexture\DXEngine24_RenderToTexture.vcxproj", "{5937A9B1-6A40-497A-A759-361CDD2B4C91}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXEngine25_DeferredRender", "DXEngine25_DeferredRender\DXEngine25_DeferredRender.vcxproj", "{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -251,6 +253,14 @@ Global
 		{5937A9B1-6A40-497A-A759-361CDD2B4C91}.Release|x64.Build.0 = Release|x64
 		{5937A9B1-6A40-497A-A759-361CDD2B4C91}.Release|x86.ActiveCfg = Release|Win32
 		{5937A9B1-6A40-497A-A759-361CDD2B4C91}.Release|x86.Build.0 = Release|Win32
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Debug|x64.ActiveCfg = Debug|x64
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Debug|x64.Build.0 = Debug|x64
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Debug|x86.ActiveCfg = Debug|Win32
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Debug|x86.Build.0 = Debug|Win32
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Release|x64.ActiveCfg = Release|x64
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Release|x64.Build.0 = Release|x64
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Release|x86.ActiveCfg = Release|Win32
+		{D9CFFFBE-FFC8-40E5-BB41-46069AEA5868}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

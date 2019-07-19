@@ -105,15 +105,6 @@ void Engine::Render(float deltaTime)
 	rtRenderer->UpdateBuffers(deviceContext, 100, 50);
 	rtRenderer->RenderBuffers(deviceContext);
 
-	rtRenderer->UpdateBuffers(deviceContext, 1000, 50);
-	rtRenderer->RenderBuffers(deviceContext);
-
-	rtRenderer->UpdateBuffers(deviceContext, 100, 500);
-	rtRenderer->RenderBuffers(deviceContext);
-
-	rtRenderer->UpdateBuffers(deviceContext, 1000, 500);
-	rtRenderer->RenderBuffers(deviceContext);
-
 	// 백버퍼 <-> 프론트 버퍼 교환.
 	swapChain->Present(1, 0);
 }
