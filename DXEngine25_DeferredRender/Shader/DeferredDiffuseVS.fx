@@ -22,7 +22,7 @@ struct vs_output
 	float4 position : SV_POSITION;
 	float2 texCoord : TEXCOORD;
     float3 lightDir : TEXCOORD1;
-    //float3 viewDir : TEXCOORD2;
+    float3 viewDir : TEXCOORD2;
 };
 
 // 정점 셰이더.
@@ -38,6 +38,9 @@ vs_output main(vs_input input)
 	// 라이트 방향 벡터.
     output.lightDir 
 		= normalize(worldLightPosition - output.position.xyz);
+
+    output.viewDir 
+		= normalize(worldCameraPosition - output.position.xyz);
 
 	output.position = mul(output.position, viewProjection);
 	output.texCoord = input.texCoord;
