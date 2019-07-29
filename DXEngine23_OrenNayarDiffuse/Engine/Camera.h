@@ -3,11 +3,11 @@
 #include "DXUtil.h"
 
 using namespace DirectX;
+using DirectX::XMVectorSet;
 
 class Camera : public AlignedAllocation<16>
 {
 public:
-	Camera();
 	Camera(float fovY, float aspectRatio, float nearZ, float farZ);
 	~Camera();
 
@@ -43,36 +43,31 @@ private:
 	void UpdateViewMatrix();
 	void UpdateProjectMatrix();
 
+	const XMMATRIX CalculateViewMatrix(XMVECTOR& cameraLook, XMVECTOR& cameraPosition, XMVECTOR& cameraUp);
+	const float Dot(XMVECTOR& v1, XMVECTOR& v2);
+
 private:
 
-	float fovY;						// 세로 시야각.
-	float aspectRatio;				// 종횡비.
-	float nearZ;					// 프러스텀 near 거리.
-	float farZ;						// 프러스텀 far 거리.
+	float fovY = 60.0f;						// 세로 시야각.
+	float aspectRatio = 1600 / 900;				// 종횡비.
+	float nearZ = 1.0f;					// 프러스텀 near 거리.
+	float farZ = 1000.0f;						// 프러스텀 far 거리.
 
 	float yaw = 0.0f;						// 요 회전 값.
 	float pitch = 0.0f;					// 피치 회전 값.
 
-	XMMATRIX viewMatrix;
-	XMMATRIX projectionMatrix;
+	XMMATRIX viewMatrix = XMMatrixIdentity();
+	XMMATRIX projectionMatrix = XMMatrixIdentity();
 
-	XMVECTOR cameraPosition 
-		= XMVectorSet(0.0f, 0.0f, -200.0f, 1.0f);
-	XMVECTOR cameraLook 
-		= XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR cameraUp 
-		= XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	XMVECTOR cameraPosition = XMVectorSet(0.0f, 0.0f, -200.0f, 1.0f);
+	XMVECTOR cameraLook = XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR cameraUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
 	// New.
-	XMVECTOR cameraRight
-		= XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR cameraForward
-		= XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR cameraRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR cameraForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 
-	XMVECTOR defaultUp
-		= XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
-	XMVECTOR defaultRight
-		= XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
-	XMVECTOR defaultForward
-		= XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
+	XMVECTOR defaultUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	XMVECTOR defaultRight = XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f);
+	XMVECTOR defaultForward = XMVectorSet(0.0f, 0.0f, 1.0f, 0.0f);
 };

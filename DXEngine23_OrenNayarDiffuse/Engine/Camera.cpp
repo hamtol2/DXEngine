@@ -1,10 +1,5 @@
 #include "Camera.h"
 
-Camera::Camera()
-{
-
-}
-
 Camera::Camera(float fovY, float aspectRatio, float nearZ, float farZ)
 {
 	this->fovY = fovY;
@@ -32,8 +27,8 @@ XMFLOAT3 Camera::GetPosition() const
 
 void Camera::SetAspectRatio(UINT width, UINT height)
 {
-	aspectRatio 
-		= static_cast<float>(width) 
+	aspectRatio
+		= static_cast<float>(width)
 		/ static_cast<float>(height);
 }
 
@@ -102,9 +97,44 @@ void Camera::UpdateCamera()
 	UpdateViewMatrix();
 }
 
+const float Camera::Dot(XMVECTOR& v1, XMVECTOR& v2)
+{
+	return XMVectorGetX(v1) * XMVectorGetX(v2)
+		+ XMVectorGetY(v1) * XMVectorGetY(v2)
+		+ XMVectorGetZ(v1) * XMVectorGetZ(v2);
+}
+
+const XMMATRIX Camera::CalculateViewMatrix(XMVECTOR& cameraLook, XMVECTOR& cameraPosition, XMVECTOR& cameraUp)
+{
+	XMVECTOR cameraZ = cameraLook - cameraPosition;
+	cameraZ /= XMVector3Length(cameraZ);
+
+	XMVECTOR cameraX = DirectX::XMVector3Cross(cameraUp, cameraZ);
+	cameraX /= XMVector3Length(cameraX);
+
+	XMVECTOR cameraY = DirectX::XMVector3Cross(cameraZ, cameraX);
+	cameraY /= XMVector3Length(cameraY);
+
+	float posX = Dot(cameraX, cameraPosition);
+	float posY = Dot(cameraY, cameraPosition);
+	float posZ = Dot(cameraZ, cameraPosition);
+
+	XMMATRIX viewMatrix = XMMatrixIdentity();
+	viewMatrix = XMMATRIX
+	(
+		XMVectorGetX(cameraX), XMVectorGetX(cameraY), XMVectorGetX(cameraZ), 0,
+		XMVectorGetY(cameraX), XMVectorGetY(cameraY), XMVectorGetY(cameraZ), 0,
+		XMVectorGetZ(cameraX), XMVectorGetZ(cameraY), XMVectorGetZ(cameraZ), 0,
+		-posX, -posY, -posZ, 1
+	);
+
+	return viewMatrix;
+}
+
 void Camera::UpdateViewMatrix()
 {
-	viewMatrix = XMMatrixLookAtLH(cameraPosition, cameraLook, cameraUp);
+	//viewMatrix = XMMatrixLookAtLH(cameraPosition, cameraLook, cameraUp);
+	viewMatrix = CalculateViewMatrix(cameraLook, cameraPosition, defaultUp);
 }
 
 void Camera::UpdateProjectMatrix()
