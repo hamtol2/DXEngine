@@ -1,4 +1,5 @@
 #include "Camera.h"
+#include <math.h>
 
 Camera::Camera(float fovY, float aspectRatio, float nearZ, float farZ)
 {
@@ -119,8 +120,7 @@ const XMMATRIX Camera::CalculateViewMatrix(XMVECTOR& cameraLook, XMVECTOR& camer
 	float posY = Dot(cameraY, cameraPosition);
 	float posZ = Dot(cameraZ, cameraPosition);
 
-	XMMATRIX viewMatrix = XMMatrixIdentity();
-	viewMatrix = XMMATRIX
+	XMMATRIX viewMatrix = XMMATRIX
 	(
 		XMVectorGetX(cameraX), XMVectorGetX(cameraY), XMVectorGetX(cameraZ), 0,
 		XMVectorGetY(cameraX), XMVectorGetY(cameraY), XMVectorGetY(cameraZ), 0,
@@ -139,5 +139,24 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectMatrix()
 {
-	projectionMatrix = XMMatrixPerspectiveFovLH(fovY, aspectRatio, nearZ, farZ);
+	//projectionMatrix = XMMatrixPerspectiveFovLH(fovY, aspectRatio, nearZ, farZ);
+	projectionMatrix = CalculateProjectionMatrix(fovY, aspectRatio, nearZ, farZ);
+}
+
+const XMMATRIX Camera::CalculateProjectionMatrix(float & fovY, float & aspecRatio, float & nearZ, float & farZ)
+{
+	float H = 1 / tanf(fovY / 2.0f);
+	float W = H / aspectRatio;
+	float A = farZ / (farZ - nearZ);
+	float B = -nearZ * farZ / (farZ - nearZ);
+
+	XMMATRIX projectionMatrix = XMMATRIX
+	{
+		W, 0.0f, 0.0f, 0.0f,
+		0.0f, H, 0.0f, 0.0f,
+		0.0f, 0.0f, A, 1.0f,
+		0.0f, 0.0f, B, 0.0f
+	};
+
+	return projectionMatrix;
 }

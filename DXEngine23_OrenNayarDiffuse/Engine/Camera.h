@@ -46,6 +46,8 @@ private:
 	const XMMATRIX CalculateViewMatrix(XMVECTOR& cameraLook, XMVECTOR& cameraPosition, XMVECTOR& cameraUp);
 	const float Dot(XMVECTOR& v1, XMVECTOR& v2);
 
+	const XMMATRIX CalculateProjectionMatrix(float& fovY, float& aspecRatio, float& nearZ, float& farZ);
+
 private:
 
 	float fovY = 60.0f;						// 세로 시야각.
